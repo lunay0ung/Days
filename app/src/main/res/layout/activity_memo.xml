@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.luna.days.MemoActivity">
+
+    <Button
+        android:id="@+id/memoDoneBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#000000"
+        android:background="?android:attr/homeAsUpIndicator"
+        android:scaleType="fitXY" />
+
+    <EditText
+        android:id="@+id/ed_memo_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="제목"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/ed_memo_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textMultiLine"
+        android:textSize="14sp" />
+
+
+</LinearLayout>

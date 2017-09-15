@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:opacity="opaque">
+
+<!--    <item android:drawable="@color/color"/>-->
+
+<!--    <item>
+        <bitmap
+            android:src="@drawable/days_splash_image"/>
+
+    </item>-->
+
+</layer-list>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardCornerRadius="8dp"
+    android:layout_marginBottom="5dp"
+    android:layout_marginRight="5dp">
+
+    <RelativeLayout
+        android:id="@+id/memo_layout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:choiceMode="multipleChoice"
+        android:descendantFocusability="blocksDescendants"
+        android:listSelector="#D3D3D3"
+        android:orientation="vertical">
+        <!--http://newpouy.pe.kr/56/참고-->
+        <!--android:background="@drawable/border"-->
+
+
+        <TextView
+            android:id="@+id/tv_mainmemo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="3dp"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <!--android:visibility="gone"-->
+        <TextView
+            android:id="@+id/tv_mainmemo2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:focusable="false"
+            android:layout_below="@+id/tv_mainmemo1"
+            android:layout_alignParentStart="true" />
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

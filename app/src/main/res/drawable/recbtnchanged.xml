@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <!--<item android:state_pressed="true" android:drawable="@drawable/blck_stop_button_64px" />&lt;!&ndash; pressed &ndash;&gt;
+        <item android:state_focused="true" android:drawable="@drawable/blck_stop_button_64px" />&lt;!&ndash; pressed &ndash;&gt;
+        <item android:drawable="@drawable/record" />&lt;!&ndash; default &ndash;&gt;
+
+-->
+        <!--selected-->
+        <item android:state_checked="true" android:drawable="@drawable/blck_stop_button_64px" />
+
+        <!--pressed--><!--
+        <item android:state_pressed="true" android:drawable="@drawable/blck_stop_button_64px" />-->
+
+        <!--focused-->
+        <item android:state_checked="false" android:drawable="@drawable/record" />
+
+
+        <item android:drawable="@drawable/record"/> <!--default 이미지, 맨 하단에 명시해야 작동ㄷ-->
+</selector>

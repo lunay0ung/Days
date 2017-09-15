@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.luna.days.RecordActivity">
+
+
+    <Button
+        android:id="@+id/memoDoneBtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#000000"
+        android:background="?android:attr/homeAsUpIndicator"
+        android:scaleType="fitXY" />
+
+    <EditText
+        android:id="@+id/ed_memo_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="제목"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/ed_memo_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@null"
+        android:ems="10"
+        android:hint="내용"
+        android:inputType="textMultiLine"
+        android:textSize="14sp" />
+
+    <RelativeLayout
+        android:id="@+id/recFileFormatLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="14dp"
+            android:gravity="center_horizontal"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:weightSum="10">
+
+            <Button
+                android:id="@+id/playRecFileBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignStart="@+id/tvPlayStartPoint"
+                android:layout_below="@+id/tvPlayStartPoint"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.15"
+                android:background="@drawable/play_button_32px" />
+
+            <SeekBar
+                android:id="@+id/mPlayProgressBar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="9.7" />
+
+            <Button
+                android:id="@+id/deleteRecFileBtn"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@+id/tvPlayMaxPoint"
+                android:layout_gravity="center_vertical"
+                android:layout_toEndOf="@+id/playBtn"
+                android:layout_weight="0.15"
+                android:background="@drawable/delete_icon_32px" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvPlayMaxPoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/linearLayout"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginEnd="25dp"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:orientation="horizontal">
+
+        <ToggleButton
+            android:id="@+id/recordBtn"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:background="@drawable/recbtnchanged"
+            android:textOff=""
+            android:textOn="">
+
+        </ToggleButton>
+    </RelativeLayout>
+
+
+</LinearLayout>
