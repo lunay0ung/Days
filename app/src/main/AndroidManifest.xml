@@ -45,7 +45,8 @@
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".STTActivity" />
         <activity android:name=".RecordActivity" />
-        <activity android:name=".ModifyTxtMemoActivity"></activity>
+        <activity android:name=".ModifyTxtMemoActivity" />
+        <activity android:name=".ModifyAudioMemoActivity"></activity>
     </application>
 
 </manifest>

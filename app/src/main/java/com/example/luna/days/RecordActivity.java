@@ -3,7 +3,9 @@ package com.example.luna.days;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.io.File;
 import java.io.IOException;
+
+import static com.example.luna.days.R.id.tvPlayMaxPoint;
 
 public class RecordActivity extends AppCompatActivity implements View.OnClickListener, MediaPlayer.OnCompletionListener{
 
@@ -34,8 +39,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     private int mPlayerState = PLAY_STOP;
     private SeekBar /*mRecProgressBar,*/ mPlayProgressBar;
     /*private Button mBtnStartRec, mBtnStartPlay;*/
-    private String mFilePath, mFileName = "test.amr";
-    public String  fullFilePath;
+
     private TextView mTvPlayMaxPoint, mtvRecMaxPoint;
 
     private Button memoDoneBtn, playRecFileBtn, deleteRecFileBtn, /*recordBtn,*/ stopRecBtn;
@@ -45,6 +49,11 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
     private int mCurRecTimeMs = 0;
     private int mCurProgressTimeDisplay = 0;
+
+    private static String RECORDED_FILE;
+    //--> /storage/emulated/0/recorded.mp4 (로그 찍어본 결과값)
+    //cf. final private static String RECORDED_FILE = "/sdcard/recorded.mp4"; --> 녹음된 음성을 저장할 파일 위치정의
+    File file;
 
 
     // 재생시 SeekBar 처리
@@ -121,18 +130,17 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        // SD카드에 디렉토리를 만든다.
-        mFilePath = SunUtil.makeDir("progress_recorder");
+/*        // SD카드에 디렉토리를 만든다.
+        File sdcard = Environment.getExternalStorageDirectory();
+        file = new File(sdcard, "recorded.mp4");
+        RECORDED_FILE = file.getAbsolutePath();*/
 
-        //recordBtn = (Button) findViewById(R.id.recordBtn);
         recordBtn = (ToggleButton) findViewById(R.id.recordBtn);
         playRecFileBtn = (Button) findViewById(R.id.playRecFileBtn);
         memoDoneBtn = (Button) findViewById(R.id.memoDoneBtn);
         deleteRecFileBtn = (Button) findViewById(R.id.deleteRecFileBtn);
-        //mRecProgressBar = (SeekBar) findViewById(R.id.recProgressBar);
         mPlayProgressBar = (SeekBar) findViewById(R.id.mPlayProgressBar);
-        //mtvRecMaxPoint =(TextView) findViewById(R.id.tvRecMaxPoint);
-        mTvPlayMaxPoint = (TextView) findViewById(R.id.tvPlayMaxPoint);
+        mTvPlayMaxPoint = (TextView) findViewById(tvPlayMaxPoint);
 
 
         ed_memo_note = (EditText) findViewById(R.id.ed_memo_note);
@@ -152,31 +160,50 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.recordBtn: //녹음 시작
                 mBtnStartRecOnClick();
                 break;
+
             case R.id.playRecFileBtn: //재생 시작
                 mBtnStartPlayOnClick();
                 break;
+
             case R.id.memoDoneBtn:
                 Intent recordIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-                recordIntent.putExtra("recordmemoTitle", ed_memo_title.getText().toString());
-                Log.d("recordmemoTitle", "recordmemoTitle"+ed_memo_title.getText().toString());
-                recordIntent.putExtra("recordmemoNote", ed_memo_note.getText().toString());
-                Log.d("recordmemoNote", "recordmemoNote"+ed_memo_note.getText().toString());
+               if(file != null)
+               {
+                   if(file.exists())
+                   {
+                       Uri audioUri = Uri.fromFile(file);
+                       recordIntent.putExtra("audioUri", audioUri.toString());
+                   }
+                   recordIntent.putExtra("recordmemoTitle", ed_memo_title.getText().toString());
+                   recordIntent.putExtra("recordmemoNote", ed_memo_note.getText().toString());
+                   setResult(RESULT_OK, recordIntent);
+                   finish();
+               }
+               else
+               {
+                   recordIntent.putExtra("recordmemoTitle", ed_memo_title.getText().toString());
+                   recordIntent.putExtra("recordmemoNote", ed_memo_note.getText().toString());
+                   setResult(RESULT_OK, recordIntent);
+                   finish();
+               }
 
-                //녹음 파일 주소 보내기
-                //생각해보니까 보낼 필요가 없음. 어차피 액티비티 다시 들어와야 재생 가능.
-                //==>> 아니 보내야 함.
-                // 첫째, 텍스트 메모는 없고 파일만 올라와져 있어도 메인에서 볼 수 있어야 하므로
-                // 둘째, 녹음만 해서 메모할 수도 있으므로
-                recordIntent.putExtra("voicememo", mFilePath);
-                //TODO 데이터 제대로 안 넘어가는 거 같은데....? 일단 로그 상 주고받는 건 같아보임..
-                Log.d("음성메모파일보내기", "음성메모파일보내기"+mFilePath);
+                break;
 
-                setResult(RESULT_OK, recordIntent);
-                finish();
             case R.id.deleteRecFileBtn:
-                //TODO 삭제 기능되게 하기
-                SunUtil.removeDir("progress_recorder");
+                //TODO 삭제 기능되게 하기 포기하고 그냥 정지로 할까 ㅠㅠㅠ.../.
+                Log.e("오디오파일 존재여부", ""+file.exists());
+                if( file.exists()) {
+                    file.delete();
+                   Log.e("오디오파일삭제됐냐?",""+file.exists());
+                    // file.delete(); -> delete되지 않음. 단지 delete버튼 눌렀을 때 재생이 안 될 뿐.
+                    //오류 : start called in state 0
+                    // You need to call mediaPlayer.start() in the onPrepared method by using a listener.
+                    // You are getting this error because you are calling mediaPlayer.start() before it has reached the prepared state.
+                    //Log.e("오디오 파일 삭제", ""+file.delete());
+                    mTvPlayMaxPoint.setText("00:00");
+                }
+
             default:
                 break;
         }//switch
@@ -186,6 +213,11 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     //녹음시작 버튼 클릭
     private void  mBtnStartRecOnClick()
     {
+        // SD카드에 디렉토리를 만든다.
+        File sdcard = Environment.getExternalStorageDirectory();
+        file = new File(sdcard, "recorded.mp4");
+        RECORDED_FILE = file.getAbsolutePath();
+
         if(mRecState==REC_STOP)
         {
             mRecState = RECORDING;
@@ -246,7 +278,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             //원래 mRecorder.setOutputFormat(MediaRecorder.OutputFormat.RAW_AMR);이었음
             mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-            mRecorder.setOutputFile(mFilePath + mFileName);
+            mRecorder.setOutputFile(RECORDED_FILE);
             mRecorder.prepare();
             mRecorder.start();
 
@@ -291,11 +323,11 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         mPlayer.setOnCompletionListener(RecordActivity.this);
         //Register a callback to be invoked when the end of a media source has been reached during playback.
 
-        fullFilePath = mFilePath + mFileName;
-        Log.v("ProgressRecorder", "녹음파일명 ==========> " + fullFilePath);
+
 
         try {
-            mPlayer.setDataSource(fullFilePath);
+            mPlayer.setDataSource(RECORDED_FILE);
+            Log.e("오디오 데이터소스", RECORDED_FILE);///storage/emulated/0/recorded.mp4
             /*Calling setDataSource(FileDescriptor), or setDataSource(String), or setDataSource(Context, Uri),
             or setDataSource(FileDescriptor, long, long), or setDataSource(MediaDataSource)
             transfers a MediaPlayer object in the Idle state to the Initialized state.*/

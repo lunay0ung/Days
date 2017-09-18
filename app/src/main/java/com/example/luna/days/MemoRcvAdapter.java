@@ -24,10 +24,8 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
 
     public static final int TEXT_TYPE = 0;
     public static final int AUDIO_TYPE = 1;
-    public static final int IMAGE_TYPE = 2;
-    public static final int TOTAL_TYPES = 3;
-    public static final int  REQUEST_MODIFY_TXTMEMO = 6;
-    //int TOTAL_TYPES;
+    public static final int TOTAL_TYPES = 2;
+
     private boolean fabStateVolume = false; //(오디오 그냥 메인에서 플레이할 수 있게?)
     public ArrayList<Item_memo> item_memoList;
 
@@ -35,7 +33,6 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
 
     RecyclerView recyclerView;
     private Context context;
-    public int index;
 
     //Provide a suitable constructor (depends on the kind of dataset)
     public MemoRcvAdapter(ArrayList<Item_memo> item_memoList, Context context, RecyclerView recyclerView)
@@ -55,9 +52,23 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
     @Override
     public int getItemViewType(int position) {
 
-        index = position;
         return item_memoList.get(position).getType();
     }
+
+
+
+    @Override
+    public int getItemCount() {
+        return this.item_memoList.size();
+    }
+
+
+    public Object getItem(int position) {
+        return item_memoList.get(position);
+    }
+
+
+
 
 
     // Provide a reference to the views for each data item
@@ -70,7 +81,6 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
 
         public TextView tv_mainmemo1, tv_mainmemo2;
         public RelativeLayout memo_layout1;
-
 
 
         //ViewHolder 클래스는 RecyclerView의 item에 들어갈 view를 받은후 그 view 안에 있는 ImageView와 TextView를 초기화]
@@ -103,7 +113,6 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             notifyItemChanged(selected_position);
 
 
-
             //수정 액티비티 소환
             Intent modifyTxtMemoIntent = new Intent(context.getApplicationContext(), ModifyTxtMemoActivity.class);
 
@@ -116,16 +125,9 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             // modifyTxtMemoIntent.putExtra("note", item_memoList.get(index).getMemo2().toString());
             //TODO selected_position = getAdapterPosition();
 
-            //노동집약적 데이터 전달
-           /* modifyTxtMemoIntent.putExtra("title", tv_mainmemo1.getText().toString());
-            modifyTxtMemoIntent.putExtra("note",  tv_mainmemo2.getText().toString());
-*/
+
             //수정 액티비티로 데이터 보내기
             ((Activity) context). startActivityForResult(modifyTxtMemoIntent, MainActivity.REQUEST_MODIFY_TXTMEMO);
-          //  Toast.makeText(view.getContext(), "수정 액티비티로 이동" , Toast.LENGTH_SHORT).show();
-
-            // Do your another stuff for your onClick
-
         }//onClick
     }//TextTypeViewHolder
 
@@ -142,8 +144,10 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             this.tv1_mainmemo_record = (TextView) view.findViewById(R.id.tv1_mainmemo_record);
             this.tv2_mainmemo_record = (TextView) view.findViewById(R.id.tv2_mainmemo_record);
             this.fakePlayBtn = (Button) view.findViewById(R.id.fakePlayBtn);
+
             this.memo_layout_record = (RelativeLayout) view.findViewById(R.id.memo_layout_record);
             context = view.getContext();
+
             memo_layout_record.setOnClickListener(this);
 
         }//AudioTypeViewHolder
@@ -158,6 +162,16 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             notifyItemChanged(selected_position);
             selected_position = getAdapterPosition();
             notifyItemChanged(selected_position);
+
+            //전달할 것, 텍스트메모+오디오메모+seekbar정보
+            Intent modifyAudioMemoIntent = new Intent(context.getApplicationContext(), ModifyTxtMemoActivity.class);
+            modifyAudioMemoIntent.putExtra("title", item_memoList.get(selected_position).getMemo1());
+            modifyAudioMemoIntent.putExtra("note", item_memoList.get(selected_position).getMemo2());
+            modifyAudioMemoIntent.putExtra("audioUri", item_memoList.get(selected_position).getAudioUri());
+            modifyAudioMemoIntent.putExtra("arrayIndex", selected_position);
+
+            ((Activity) context).startActivityForResult(modifyAudioMemoIntent, MainActivity.REQUEST_MODIFY_AUIDOMEMO);
+
         }
     }//AudioTypeViewHolder
 
@@ -192,10 +206,7 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-/*
-        이걸로 써도 클릭은 되지만 카드처럼 보이지 않음, 테두리도 없음.
-        Item_memo item_memo = item_memoList.get(position);
-        holder.itemView.setBackgroundColor(selected_position == position ? Color.LTGRAY : Color.TRANSPARENT);*/
+
         //하단-> 지저분해서 안 쓸 예정
         // holder.memo_layout1.setBackgroundColor(selected_position == position ? Color.LTGRAY : Color.TRANSPARENT);
 
@@ -203,8 +214,8 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
         //멀티플 뷰홀더 시도 전 원래 있던 애
 /*        TextTypeViewHolder.tv_mainmemo1.setText(item_memoList.get(position).memo1);
         TextTypeViewHolder.tv_mainmemo2.setText(item_memoList.get(position).memo2);*/
-        index = position;
-        Item_memo item_memo = item_memoList.get(index);
+
+        Item_memo item_memo = item_memoList.get(position);
 
         if (item_memo != null)
         {
@@ -247,53 +258,30 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
                     ((AudioTypeViewHolder) holder).tv1_mainmemo_record.setText(item_memoList.get(position).memo1);
                     ((AudioTypeViewHolder) holder).tv2_mainmemo_record.setText(item_memoList.get(position).memo2);
                     ((AudioTypeViewHolder) holder).fakePlayBtn.setBackgroundResource(R.drawable.simple_play_btn_24px);
-
-                    ((AudioTypeViewHolder) holder).tv1_mainmemo_record.setTag(position);
-                    ((AudioTypeViewHolder) holder).tv2_mainmemo_record.setTag(position);
+                    break;
 
             }//switch
         }// if (item_memo != null)
     }
 
 
-
-    @Override
-    public int getItemCount() {
-        return this.item_memoList.size();
-    }
-
-
-    public Object getItem(int position) {
-        return item_memoList.get(position);
-    }
-
-
-
     public void addItem(Item_memo item_memo)
     {
         item_memoList.add(item_memo);
-    }
-
-    /*//텍스트 스타일 메모 추가
-    public void addItem (String title, String note)
-    {
-        Item_memo item_memo = new Item_memo(title, note);
         item_memo.setType(TEXT_TYPE);
-
-        item_memoList.add(item_memo);
     }
-
-
-
 
     //오디오 스타일 메모 추가
     public void addItem(String fileName, String title, String note)
     {
         Item_memo item_memo = new Item_memo(fileName, title, note);
         item_memo.setType(AUDIO_TYPE);
-
+        item_memo.setMemo1(title);
+        item_memo.setMemo2(note);
+        item_memo.setAudioUri(fileName);
         item_memoList.add(item_memo);
-    }*/
+    }
+
 
 
     //메모 삭제

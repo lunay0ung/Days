@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.view.ViewPager;
@@ -43,7 +42,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,6 +68,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //텍스트(STT포함) 메모 수정할 때
     public static final int REQUEST_MODIFY_TXTMEMO=6;
+
+    //오디오 파일 있는 메모 수정할 떄
+    public static final int REQUEST_MODIFY_AUIDOMEMO = 7;
 
   /*  //사진메모
     public static final int REQUEST_MEMO_PHOTO= 6;*/
@@ -202,31 +203,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //아침시간 세팅(8-11)
         final String [] goodMorning = {"좋은 아침! 오늘은 새로운 일을 계획하기 좋은 날인 것 같군요. 계획으로 끝나지 않고 바로 실행에 옮겨도 문제없을 것 같아요. 단, 투자는 신중히 검토해야 해요!",
                 "한번에 욕심내지 말고 점진적으로 일을 진행해야 성과가 있을 것 같아요. 너무 급하게 하려하면 오히려 스텝이 엉킬 위험이 있어요. 마음을 편히 하고 약간은 느리게 진행하세요.",
-                "오늘도 행복으로 빼곡한 하루 보내요. 그리고 조금 힘들더라도 남을 위해 한번 더 마음을 쓰면 어떨까요? 다른 사람에게 나누어주는 삶의 기쁨도 갖고 마음의 평화와 행복도 덤으로 갖게 된대요.",
+                "새로운 일에 과감히 도전할 수 있는 패기와 개척자의 의지가 요구되는 하루가 될 거예요. 여느 때보다 더욱 기운을 내어 삶을 향해 돌진하세요.",
                 "걱정, 근심, 고통거리라고 생각했던 일들이 이제는 당신의 처지와 형편을 향상시킬 거예요. 오늘은 예감이 좋아요. 어떤 일이든 망설이지 마시고 도전하세요.",
-                "시간은 누구에게나 공평하죠. 그래서 더욱 소중해요. 다만 모두 그것을 소중한 선물로 생각하고 다루는가는 전혀 별개의 문제죠. Days와 함께라면 알찬 하루를 보내기 더 좋을 것 같군요."};
+                "시간은 누구에게나 공평하죠. 그래서 더욱 소중해요. 다만 모두 그것을 소중한 선물로 생각하고 다루는가는 전혀 별개의 문제죠. 오늘은 소중한 선물같은 하루가 될 것 같군요."};
 
         //오후시간 세팅(12-5)
         final String [] goodAfternoon ={"하루를 열심히 사는 것도 좋지만 건강은 모든 일을 가능케 하는 근본이에요. 아무리 주의해도 지나침이 없죠. " +
-                "틈틈이 스트레칭도 하고! 남은 하루 마저 마무리 잘 하세요.",
-                "오후 시간이네요. 이것 저것 해야 할 일도 많고 생각이 복잡하다면, 일의 우선순위를 노트에 적어보세요. 눈 앞이 환해지고 효율이 높아질 거예요.",
+                "틈틈이 스트레칭도 하고! 남은 오후 또한 건강히 보내길 바랍니다.",
+                "벌써 오후네요. 이것 저것 해야 할 일도 많고 생각이 복잡하다면, 일의 우선순위를 노트에 적어보세요. 눈 앞이 환해지고 효율이 높아질 거예요.",
                 "오늘 오후도 반짝반짝 빛나고 계신가요? 삶을 아름답게 하는 보석들은 바쁘게 달려갈 때는 보이지 않는대요. " +
                         "오히려 차분히 쉬면서 주변을 둘러보게 되면 바쁠 때는 보지 못했던 보물들을 보게 될 수 있어요.",
-                "조금 떨어져 세상을 보면 나와 다른 사람과 가축과 나무와 돌과 물이 모두 하나죠. 그래서 이 중 어느 하나를 보살피는 일도 결국은 나 자신을 보살피는 일과 같아요. 남은 오후도 잘 채워나가길 바라요.",
-                "오늘 하루는 어떻게 보내고 계세요? 당신이 변화시킬 수 있는 일들과 그렇지 못한 일들이 있어요. 바꿀 수 없는 일들에 마음을 쓰는 것은 효율적이지 못하겠죠. 역량에 따른 기준을 설정해 두는 건 어떨까요?"};
+                "조금 떨어져 세상을 보면 나와 다른 사람과 가축과 나무와 돌과 물이 모두 하나죠. 그래서 이 중 어느 하나를 보살피는 일도 결국은 나 자신을 보살피는 일과 같아요. 조금 아쉬운 기분이 든다면, 오늘 하루 남은 시간동안엔 스스로를 보살피는 데 게을리 하지 마시길.",
+                "어떤 하루를 보내고 있나요? 당신이 변화시킬 수 있는 일들과 그렇지 못한 일들이 있어요. 바꿀 수 없는 일들에 마음을 쓰는 것은 효율적이지 못하겠죠. 역량에 따른 기준을 설정해 두는 건 어떨까요?"};
 
 
         //저녁시간 세팅(6-8) +     //밤시간 세팅(9-12)
         final String [] goodEvening ={"하루가 저물어 가고 있어요. 혹시 어떤 고민때문에 힘든 하루였다면 이렇게 생각해보세요. " +
                 "누구나 문제를 가지고 살아가고, 답을 구하기 위해 먼 길을 나서기도 하지만 사실 진짜 답은 자신의 안에 있는 경우가 많다는걸요.",
-                "마음이 어지러울 때 그 속에 있는 한 어지러움은 없어지지 않는대요. 그 안에서 빠져 나와 외부의 시선으로 바라보다 보면 어느새 어지러움은 사라져 있을 거예요. 하루를 마무리하는 데 참고하면 어떨까요?.",
-                "지혜는 구하려고 애쓰면 오히려 혼미해 지고 멀어져요. 오히려 잠시 내려 놓고 고요한 마음으로 바라보다 보면 안개가 걷히듯이 불현듯 찾아 오는 그런 거죠. " +
-                        "하루를 마감하기 전 조금은 쉬면서 되돌아보는 건 어떨까요?",
-                "오늘 하루는 어떤 변화가 있었나요? 좋은 습관을 들이고 작든 크든 생각한 것을 실천에 옮기고 있노라면 변화는 자연 따라와요. 그 변화가 누적되면 그곳에 성취도 있고 성공도 존재하는 거죠.",
-                "탐하고 채우려 들면 행복의 크기는 줄어들고 나누고 비우려 들면 행복은 반대로 커져요. 근심은 필요한 것 이상으로 가질 때 생기고 감사는 가진 것이 족함을 알 때 생겨나죠. 어떤 하루를 보내셨나요?",
-                "현명한 사람은 모든 이유를 자신의 내부에서 찾고 어리석은 사람은 타인들 속에서 찾아요. 현명한 사람은 감사해 하고 어리석은 사람은 원망하죠. 좋은 마음으로 하루를 마무리하시길 바라요.",
-                "하루가 저물어가고 있네요. 오늘 어떤 문제 때문에 괴로웠다면 이말을 해주고 싶네요. 모든 문제에는 반드시 문제를 푸는 열쇠가 있어요. 사람마다 다른 방법으로 그것을 풀지만 가장 좋은 방법은 선입견을 버리고 열린 마음으로 처음부터 바라보는 거죠.",
-                "완벽한 사람은 존재하지 않아요. 당신이 동경하는 존재도 전혀 완벽하지 않다는 걸 알아야 해요. 억지스럽지 않고 자연스럽게 기다리면 완벽에 다가서게 될 테니, 하루 끝도 자연스럽게 마무리하기를..."};
+                "마음이 어지러울 때 그 속에 있는 한 어지러움은 없어지지 않아요. 그 안에서 빠져 나와 외부의 시선으로 바라보다 보면 어느새 어지러움은 사라져 있을 거예요.",
+                "지혜는 구하려고 애쓰면 오히려 혼미해 지고 멀어져요. 오히려 잠시 내려 놓고 고요한 마음으로 바라보다 보면 안개가 걷히듯이 불현듯 찾아 오는 그런 거죠. 오늘 저녁은 차분하게 보내는 게 좋을 것 같네요.",
+                "좋은 습관을 들이고 작든 크든 생각한 것을 실천에 옮기고 있노라면 변화는 자연 따라와요. 그 변화가 누적되면 그곳에 성취도 있고 성공도 존재하는 거죠. 오늘 하루는 어떤 변화가 있었나요? ",
+                "탐하고 채우려 들면 행복의 크기는 줄어들고 나누고 비우려 들면 행복은 반대로 커져요. 근심은 필요한 것 이상으로 가질 때 생기고 감사는 가진 것이 족함을 알 때 생겨나죠. 감사하는 마음과 행복한 기운이 가득한 저녁시간 보내세요.",
+                "현명한 사람은 모든 이유를 자신의 내부에서 찾고 어리석은 사람은 타인들 속에서 찾아요. 현명한 사람은 감사해 하고 어리석은 사람은 원망하죠. 오늘 하루, 어떠한 사람에 조금 더 가까웠는지 생각해보면 좋을 것 같군요.",
+                "어느 새 하루가 저물어가고 있어요. 오늘 어떤 문제 때문에 괴로웠다면 이말이 필요할 것 같네요. 모든 문제에는 반드시 문제를 푸는 열쇠가 있어요. 사람마다 다른 방법으로 그것을 풀지만 가장 좋은 방법은 선입견을 버리고 열린 마음으로 처음부터 바라보는 거죠.",
+                "사람들과 부딛치며 살다 보면 자신이 누구인지 잊어버릴 수 있어요. 이것을 제어하는 방법은 조용한 곳에서 혼자만의 시간을 가지며 생각을 정리하는 거죠. 오늘 저녁은 생각을 정리하기 좋은 때가 될 것 같네요."};
 
 /*
 
@@ -236,19 +236,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "밤3  당장 불편한 것을 잠시 피하기 위하여 약속하지 마십시오 작은 것을 얻고 나중에 큰 것으로 갚아야 하니 참 나쁜 투자입니다 때로는 거절도 친절의 한 종류가 됩니다"};*/
 
         //새벽(1-4) 잠 못 이루는 시간대
-        final String[] goodLateNight = {"지혜는 구하려고 애쓰면 오히려 혼미해 지고 멀어져요. 오히려 잠시 내려 놓고 고요한 마음으로 바라보다 보면 안개가 걷히듯이 불현듯 찾아 올 거예요. 부디 잠자리에 들어 좋은 꿈 꾸기를!",
-                "고민이 있으신가요? 살면서 자기 자신의 모습을 보기 위하여 투자하는 시간만큼 값진 것은 없어요. 스스로가 자신의 주인이어야 함이 당연한데 사람들은 남의 삶을 사는 경우가 많거든요.",
-                "아직도 깨어있으시네요. 우리 할머니가 말씀하시길 눈을 감고 마음의 심연을 들여다 보았을 때 어둡다면 자신에 대한 믿음이 부족하고 세상을 의심하기 때문이래요. 자기 확신이 있다면 그 곳은 틀림없이 밝게 빛나고 있을 거라네요.",
-                "늦은 밤까지 사색을 즐기시나요? 이 세상에는 수백억의 사람들이 다녀 갔거나 살고 있어요. 당신이 겪는 고민은 이미 이 사람들에 의해 답이 나와 있지만 단지 그것을 찾아보려 하지 않을 뿐이에요."};
+        final String[] goodLateNight = {"지혜는 구하려고 애쓰면 오히려 혼미해 지고 멀어져요. 오히려 잠시 내려 놓고 고요한 마음으로 바라보다 보면 안개가 걷히듯이 불현듯 찾아 올 거예요. 지혜가 필요하다면, 이 말을 음미해보세요.",
+                "무엇에 대해 생각하고 계시나요? 살면서 자기 자신의 모습을 보기 위하여 투자하는 시간만큼 값진 것은 없어요. 스스로가 자신의 주인이어야 함이 당연한데 사람들은 남의 삶을 사는 경우가 많거든요.",
+                "아직도 깨어있으시네요. 고민이라도 있는 건가요? 눈을 감고 마음의 심연을 들여다 보았을 때 어둡다면 자신에 대한 믿음이 부족하고 세상을 의심하기 때문이래요. 자기 확신이 있다면 그 곳은 틀림없이 밝게 빛나고 있을 거라네요.",
+                "늦은 밤까지 사색을 즐기시나요? 고민이 있으신가요? 이 세상에는 수백억의 사람들이 다녀 갔거나 살고 있어요. 당신이 겪는 고민은 이미 이 사람들에 의해 답이 나와 있지만 단지 그것을 찾아보려 하지 않을 뿐이에요."};
 
 
         //새벽(5-7) 일찍 일어나는 시간대
         final String[] goodEarlyMorning = {"새벽인데, 무슨 일로 깨어있으신가요? 갑자기 이런 말이 하고 싶네요. 변화를 두려워하지 말라는 거요. 변화는 성장의 전제거든요. " +
                 "변화하지 않는 것은 정체가 아니라 퇴보예요. 본래의 나란 없으며 변화의 과정을 걷는 나만 있는 거죠.",
                  "누구나 살면서 두려운 일을 만나게 돼요. 사람마다 그 종류가 같지는 않지만 두렵다 함은 피하고 싶음을 뜻하죠. 그러나 피할수록 그것의 크기는 더 커질 뿐이에요. 오늘은 어제보다 조금 더 용감한 하루 맞이하기를!",
-                "비몽사몽하네요. 그래도 우리가 신에게서 받은 가장 소중한 시간이라는 선물을 잘 활용하려면 얼른 정신 차려야겠어요. " +
+                "비몽사몽하군요. 그래도 우리가 신에게서 받은 가장 소중한 시간이라는 선물을 잘 활용하려면 얼른 정신 차려야겠어요. " +
                         "모두 다 같이 시간이라는 공통적인 재료를 사용하더라도 어떻게 활용하느냐에 따라 각기 다른 내용의 작품을 만들어내니까요.",
-                "미래는 운명이 결정하는 것이 아니라 작은 습관들이 쌓여 만들어지는 거예요. 건강과 재물과 명예가 모두 사람들이 작게 생각하는 습관들로부터 만들어 지는 거죠. 피곤하더라도 좋은 습관 잃지 않도록 힘내요!"};
+                "미래는 운명이 결정하는 것이 아니라 작은 습관들이 쌓여 만들어지는 거예요. 건강과 재물과 명예가 모두 사람들이 작게 생각하는 습관들로부터 만들어 지는 거죠. 오늘은 미래를 결정하는 데 결정적인 하루가 될 것 같군요. 예감이 좋아요."};
 
 
 
@@ -586,8 +586,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 final String[] choices = {"수정", "삭제"};
                 builder.setNegativeButton("취소", new DialogInterface.OnClickListener()
-                        {
-                            @Override
+                            {
+                                @Override
                             public void onClick(DialogInterface dialog, int which)
                             {
                                 dialog.cancel();
@@ -832,17 +832,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case REQUEST_MEMO_RECORD: //오디오 메모 추가
                             String recordmemoTitle = data.getStringExtra("recordmemoTitle");
                             String recordmemoNote = data.getStringExtra("recordmemoNote");
-                            String voicememo = data.getStringExtra("voicememo");
-                            File getFile = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+ File.separator + "progress_recorder");
-                            Log.e("음성메모파일받기", "음성메모파일받기"+Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "progress_recorder");
+                            String audioUri = data.getStringExtra("audioUri");
 
 
-                            if(recordmemoTitle.length() > 0 || recordmemoNote.length()>0 /*|| getFile.exists()==true*/) //메모 제목/내용 중 하나라도 있으면 메모 생성
+                            //오디오파일이 없을 떄
+                            if(audioUri==null)
                             {
-                                Log.e("음성메모", "음성메모 데이터");
-                                item_memo = new Item_memo(voicememo, recordmemoTitle, recordmemoNote);
-                                item_memoList.add(item_memo);
-                                //memoRcvAdapter.addItem(voicememo, recordmemoTitle, recordmemoNote);
+                                //텍스트 메모는 있음(텍스트 메모 없으면 취급안함)
+                                if(recordmemoTitle.length() > 0 || recordmemoNote.length()>0) //메모 제목/내용 중 하나라도 있으면 메모 생성
+                                {
+                                    item_memo = new Item_memo(recordmemoTitle, recordmemoNote);
+                                    item_memoList.add(item_memo);
+                                    memoRcvAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            //오디오 파일있음
+                            else
+                            {
+                                Uri thisAudioUri = Uri.parse(audioUri);
+                                Log.e("오디오파일 있니", ""+thisAudioUri);
+
+                                item_memo = new Item_memo(audioUri, recordmemoTitle, recordmemoNote);
+                                memoRcvAdapter.addItem(audioUri, recordmemoTitle, recordmemoNote);
                                 memoRcvAdapter.notifyDataSetChanged();
                             }
                             break;
@@ -869,6 +881,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
 
                             break;
+
+                        case REQUEST_MODIFY_AUIDOMEMO:
+
+
 
                     }//switch
                 }//resultCode ok
