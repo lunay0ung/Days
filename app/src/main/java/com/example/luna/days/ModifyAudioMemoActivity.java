@@ -3,7 +3,9 @@ package com.example.luna.days;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +20,7 @@ import android.widget.Toast;
 
 import java.io.File;
 
-public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
+public class ModifyAudioMemoActivity extends AppCompatActivity implements View.OnClickListener, MediaPlayer.OnCompletionListener {
 
     //뷰 객체
     Button memoDoneBtn, Button, deleteRecFileBtn, playRecFileBtn;
@@ -78,6 +80,8 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_audio_memo);
 
+
+
         //변수 선언
         memoDoneBtn = (Button) findViewById(R.id.memoDoneBtn);
         deleteRecFileBtn = (Button) findViewById(R.id.deleteRecFileBtn);
@@ -95,21 +99,14 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaP
         String title = getDataIntent.getExtras().getString("title");
         String note = getDataIntent.getExtras().getString("note");
         String audioUri = getDataIntent.getExtras().getString("audioUri");
+        Log.e("수정꺼 AudioURI",audioUri);
         arrayIndex = getDataIntent.getExtras().getInt("arrayIndex", 0);
 
         //자료 세팅
         ed_memo_title.setText(title);
         ed_memo_note.setText(note);
         RECORDED_FILE = audioUri;
-
-
-        //기존 파일 재생
-        playRecFileBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mBtnStartPlayOnClick();
-            }
-        });
+        file = new File(RECORDED_FILE);
 
 
         //파일 삭제
@@ -130,16 +127,21 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaP
                         {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                //녹음 파일을 삭제한다
+                                File file = new File(RECORDED_FILE);
+                               // 녹음 파일을 삭제한다
                                 if( file.exists())
-                                    Log.e("파일삭제", "파일삭제"+file.exists());
+                                   Log.e("파일삭제",""+file.exists());
                                 {
                                     file.delete();
-                                    mTvPlayMaxPoint.setText("00:00");
+                                    Log.e("파일삭제됨?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
+                                    RECORDED_FILE = null;
+                                    //모든 뷰 객체를 삭제한다
+                                    mPlayProgressBar.setVisibility(View.GONE);
+                                    playRecFileBtn.setVisibility(View.GONE);
+                                    deleteRecFileBtn.setVisibility(View.GONE);
+                                    mTvPlayMaxPoint.setVisibility(View.GONE);
                                 }
-
                             }
-
                         })
                         .setNegativeButton("삭제 안 해요", new DialogInterface.OnClickListener()
                         {
@@ -156,19 +158,108 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaP
                 alertDialog.show();
 
             }// onclick
-        });//setOnClickListener
+        });//setOnClickListener*/
 
-
-
-        //수정해서 다시 메인으로 보내주기
-        Intent modifiedIntent = new Intent(getApplicationContext(), MainActivity.class);
-
-        modifiedIntent.putExtra("arrayIndex", arrayIndex);
-        modifiedIntent.putExtra("mtitle", ed_memo_title.getText());
-        modifiedIntent.putExtra("mnote", ed_memo_note.getText());
-        modifiedIntent.putExtra("maudioUri", RECORDED_FILE);
-
+    memoDoneBtn.setOnClickListener(this);
+    playRecFileBtn.setOnClickListener(this);
+    deleteRecFileBtn.setOnClickListener(this);
     }//onCreate
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.playRecFileBtn:
+                mBtnStartPlayOnClick();
+
+                break;
+
+            case R.id.memoDoneBtn:
+
+                Intent modifiedIntent = new Intent(getApplicationContext(), MainActivity.class);
+                Log.e("수정에서 메인으로 Intent 보내기전0",""+file);
+                if (file != null)
+                {
+                    Log.e("수정에서 메인으로 Intent 보내기전1",""+file);
+                   // if (file.exists()) {
+                        Log.e("수정에서 메인으로 Intent 보내기전2",""+file);
+                        Uri m_audioUri = Uri.fromFile(file);
+                        RECORDED_FILE = m_audioUri.toString();
+                       // modifiedIntent.putExtra("m_audioUri", m_audioUri.toString());
+                        modifiedIntent.putExtra("m_audioUri", RECORDED_FILE);
+                  //  }
+                    Log.e("수정에서 메인으로 Intent 보내기전3",""+file);
+                    modifiedIntent.putExtra("arrayIndex", arrayIndex);
+                    modifiedIntent.putExtra("m_recordmemoTitle", ed_memo_title.getText().toString());
+                    Log.e("텍스트메모 제목", ed_memo_title.getText().toString());
+                    modifiedIntent.putExtra("m_recordmemoNote", ed_memo_note.getText().toString());
+                    Log.e("텍스트메모 내용", ed_memo_note.getText().toString());
+                    setResult(RESULT_OK, modifiedIntent);
+                    finish();
+                }
+                else
+                {
+                    modifiedIntent.putExtra("arrayIndex", arrayIndex);
+                    modifiedIntent.putExtra("m_recordmemoTitle", ed_memo_title.getText().toString());
+                    Log.e("텍스트메모 제목",  ed_memo_title.getText().toString());
+                    modifiedIntent.putExtra("m_recordmemoNote", ed_memo_note.getText().toString());
+                    Log.e("텍스트메모 내용",  ed_memo_note.getText().toString());
+
+                    setResult(RESULT_OK, modifiedIntent);
+                    finish();
+                }
+                break;
+
+            case R.id.deleteRecFileBtn:
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ModifyAudioMemoActivity.this);
+
+                //제목 세팅
+                alertDialogBuilder.setTitle("<녹음 파일 삭제여부 확인>");
+
+                //알림창 내용 세팅
+                alertDialogBuilder
+                        .setMessage("파일을 정말 삭제하시겠어요?")
+                        .setCancelable(false) //뒤로 버튼 클릭 시 취소가능설정 여부
+                        .setPositiveButton("삭제 할래요", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                File file = new File(RECORDED_FILE);
+                                Log.e("",""+file);
+                                // 녹음 파일을 삭제한다
+                                if( file.exists())
+                                    Log.e("파일삭제",""+file.exists());
+                                {
+                                    file.delete();
+                                    Log.e("파일삭제됨?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
+                                    RECORDED_FILE = null;
+                                    //모든 뷰 객체를 삭제한다
+                                    mPlayProgressBar.setVisibility(View.GONE);
+                                    playRecFileBtn.setVisibility(View.GONE);
+                                    deleteRecFileBtn.setVisibility(View.GONE);
+                                    mTvPlayMaxPoint.setVisibility(View.GONE);
+                                }
+                            }
+                        })
+                        .setNegativeButton("삭제 안 해요", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                //알림창을 벗어난다
+                                dialog.cancel();
+                            }
+                        });
+                //다이얼로그 생성
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                //다이얼로그 보여주기
+                alertDialog.show();
+
+                break;
+
+        }//switch
+    }//onClick
 
     //재생시작 버튼 클릭
     private void mBtnStartPlayOnClick()
@@ -206,10 +297,26 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements MediaP
 
 
         try {
-            mPlayer.setDataSource(RECORDED_FILE);
+
+            File sdcard = Environment.getExternalStorageDirectory();
+            file = new File(sdcard, "recorded.mp4");
+            RECORDED_FILE = file.getAbsolutePath();
+           mPlayer.setDataSource(RECORDED_FILE);
+           mPlayer.prepare();
+
+
+
+            /*{Idle, Prepared, Started, Paused, PlaybackCompleted, Error}*/
+
+           /* FileInputStream fis = new FileInputStream(RECORDED_FILE);
+            FileDescriptor fd = fis.getFD();
+            mPlayer.setDataSource(fd);
+            fis.close();
 
             mPlayer.prepare();
-            /*{Idle, Prepared, Started, Paused, PlaybackCompleted, Error}*/
+*/
+
+
             int point = mPlayer.getDuration();
             mPlayProgressBar.setMax(point);
 

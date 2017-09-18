@@ -885,6 +885,55 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case REQUEST_MODIFY_AUIDOMEMO:
 
 
+                            int recordmemo_arrayIndex = data.getExtras().getInt("arrayIndex");
+                            String m_recordmemoTitle = data.getStringExtra("m_recordmemoTitle");
+                            String m_recordmemoNote = data.getStringExtra("m_recordmemoNote");
+                            String m_audioUri = data.getStringExtra("m_audioUri");
+
+
+                            item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
+                            item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
+                            item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+
+                            memoRcvAdapter.notifyDataSetChanged();
+
+                          //**  //텍스트는 아예 없고 오디오만 있을 때
+                            if(m_recordmemoTitle.length()<0 && m_recordmemoNote.length()<0)
+                            {
+                                item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
+                                item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
+                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+
+                                memoRcvAdapter.notifyDataSetChanged();
+                            }
+
+                            //오디오파일이 없을 떄
+                            if(m_audioUri==null)
+                            {
+                                //텍스트 메모는 있음(텍스트 메모 없으면 취급안함)
+                                if(m_recordmemoTitle.length() > 0 || m_recordmemoNote.length()>0) //메모 제목/내용 중 하나라도 있으면 메모 생성
+                                {
+
+                                    item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
+                                    item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
+                                    memoRcvAdapter.notifyDataSetChanged();
+                                }
+                            }
+
+                            //오디오 파일있음
+                            else
+                            {
+                                Uri thisAudioUri = Uri.parse(m_audioUri);
+                                Log.e("오디오파일 있니", ""+thisAudioUri);
+
+                                item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
+                                item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
+                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+
+                                memoRcvAdapter.notifyDataSetChanged();
+                            }
+                            break;
+
 
                     }//switch
                 }//resultCode ok

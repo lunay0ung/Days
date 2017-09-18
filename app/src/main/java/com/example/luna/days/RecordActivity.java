@@ -168,7 +168,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.memoDoneBtn:
                 Intent recordIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-               if(file != null)
+               if(file != null) //이렇게 먼저 걸러내지 않으면 file 자체를 확인하지 못함. 파일이 전역변수인데 왜 그런지 모르겠음. null이라고 안 되어 잇어서 그런가?
                {
                    if(file.exists())
                    {
