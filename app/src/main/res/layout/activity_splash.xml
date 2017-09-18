@@ -11,14 +11,27 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/tv_splash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_weight="0.07"
+            android:fontFamily="cursive"
+            android:gravity="center"
+            android:text="Make Your Days Special"
+            android:textSize="30sp"
+            android:textStyle="italic" />
 
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/default_img"
             app:srcCompat="@drawable/default_img" />
 
@@ -32,7 +45,6 @@
             android:max="3"
             android:progressBackgroundTint="@color/colorPrimary"
             android:progressTint="@color/colorPrimaryDark" />
-
     </LinearLayout>
 
 

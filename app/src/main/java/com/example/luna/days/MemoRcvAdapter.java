@@ -1,5 +1,6 @@
 package com.example.luna.days;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -90,18 +91,6 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
         public void onClick(View view) {
             Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
 
-            //int itemPosition = recyclerView.getChildLayoutPosition(view);
-            Intent modifyTxtMemoIntent = new Intent(context.getApplicationContext(), ModifyTxtMemoActivity.class);
-           // modifyTxtMemoIntent.putExtra("memo", item_memoList.get(index));
-           // modifyTxtMemoIntent.putExtra("title", item_memoList.get(index).getMemo1().toString());
-           // modifyTxtMemoIntent.putExtra("note", item_memoList.get(index).getMemo2().toString());
-            //오류나는 애들 원인 규명해야됨
-
-            modifyTxtMemoIntent.putExtra("title", tv_mainmemo1.getText().toString());
-            modifyTxtMemoIntent.putExtra("note",  tv_mainmemo2.getText().toString());
-            //수정 액티비티로 데이터 보내기
-         //   ((Activity) context). startActivityForResult(modifyTxtMemoIntent, MainActivity.REQUEST_MODIFY_TXTMEMO);
-          //  Toast.makeText(view.getContext(), "수정 액티비티로 이동" , Toast.LENGTH_SHORT).show();
 
             // Below line is just like a safety check, because sometimes holder could be null,
             // in that case, getAdapterPosition() will return RecyclerView.NO_POSITION
@@ -112,6 +101,28 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             notifyItemChanged(selected_position);
             selected_position = getAdapterPosition();
             notifyItemChanged(selected_position);
+
+
+
+            //수정 액티비티 소환
+            Intent modifyTxtMemoIntent = new Intent(context.getApplicationContext(), ModifyTxtMemoActivity.class);
+
+            //modifyTxtMemoIntent.putExtra("memo", item_memoList.get(selected_position));
+            modifyTxtMemoIntent.putExtra("title", item_memoList.get(selected_position).getMemo1().toString());
+            modifyTxtMemoIntent.putExtra("note", item_memoList.get(selected_position).getMemo2().toString());
+            modifyTxtMemoIntent.putExtra("arrayIndex",selected_position);
+            //계속 item_memoList.get(index)를 하는 바람에 데이터가 주고받는 게 오류가 났음..이하 주석처리한 애들도 시도했다가 실패
+            // modifyTxtMemoIntent.putExtra("title", item_memoList.get(index).getMemo1().toString());
+            // modifyTxtMemoIntent.putExtra("note", item_memoList.get(index).getMemo2().toString());
+            //TODO selected_position = getAdapterPosition();
+
+            //노동집약적 데이터 전달
+           /* modifyTxtMemoIntent.putExtra("title", tv_mainmemo1.getText().toString());
+            modifyTxtMemoIntent.putExtra("note",  tv_mainmemo2.getText().toString());
+*/
+            //수정 액티비티로 데이터 보내기
+            ((Activity) context). startActivityForResult(modifyTxtMemoIntent, MainActivity.REQUEST_MODIFY_TXTMEMO);
+          //  Toast.makeText(view.getContext(), "수정 액티비티로 이동" , Toast.LENGTH_SHORT).show();
 
             // Do your another stuff for your onClick
 
@@ -256,7 +267,14 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
         return item_memoList.get(position);
     }
 
-    //텍스트 스타일 메모 추가
+
+
+    public void addItem(Item_memo item_memo)
+    {
+        item_memoList.add(item_memo);
+    }
+
+    /*//텍스트 스타일 메모 추가
     public void addItem (String title, String note)
     {
         Item_memo item_memo = new Item_memo(title, note);
@@ -266,6 +284,8 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
     }
 
 
+
+
     //오디오 스타일 메모 추가
     public void addItem(String fileName, String title, String note)
     {
@@ -273,35 +293,8 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
         item_memo.setType(AUDIO_TYPE);
 
         item_memoList.add(item_memo);
-    }
+    }*/
 
-
-    public void editItem(Item_memo item_memo)
-    {
-        item_memoList.get(index).setMemo1(item_memo.memo1);
-        item_memoList.get(index).setMemo2(item_memo.memo2);
-    }
-
-    //텍스트 스타일 메모 수정
-    public void editItem(String title, String note)
-    {
-
-        item_memoList.get(index).setMemo1(title);
-        item_memoList.get(index).setMemo2(note);
-
-        notifyDataSetChanged();
-    }
-
-
-    //오디오 스타일 메모 수정
-    public void editItem(String fileName, String title, String note)
-    {
-        item_memoList.get(index).setFileName(fileName);
-        item_memoList.get(index).setMemo1(title);
-        item_memoList.get(index).setMemo2(note);
-
-        notifyDataSetChanged();
-    }
 
     //메모 삭제
     public void remove(int position) {

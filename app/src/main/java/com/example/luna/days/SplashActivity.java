@@ -6,8 +6,11 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class SplashActivity extends Activity {
 
@@ -15,6 +18,7 @@ public class SplashActivity extends Activity {
     ImageView imageView;
     private int progressStatus = 0;
     Splash splash;
+    TextView tv_splash;
 
 
     @Override
@@ -24,6 +28,8 @@ public class SplashActivity extends Activity {
 
         imageView = (ImageView) findViewById(R.id.imageView);
         progressLoading = (ProgressBar) findViewById(R.id.progressLoading);
+        tv_splash = (TextView) findViewById(R.id.tv_splash);
+
 
         // progressLoading.getProgressDrawable().setColorFilter(Color.GREEN, PorterDuff.Mode.SRC_IN);
         //프로그레스 바 색상 바꾸기
@@ -31,8 +37,16 @@ public class SplashActivity extends Activity {
 
         startLoading();
 
+
+
+        //애니메이션 액션 로딩
+        Animation anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.splash_alpha);
+        //뷰의 애니메이션 시작
+        tv_splash.startAnimation(anim);
+
         splash = new Splash();
         splash.execute(0);
+
     }//onCreate
 
 
@@ -47,7 +61,7 @@ public class SplashActivity extends Activity {
                 finish();
 
             }//run
-        },1501);//Runnable
+        },2100);//Runnable
 
 
 

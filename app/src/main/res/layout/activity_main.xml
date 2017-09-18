@@ -27,12 +27,14 @@
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                    <LinearLayout
-                        android:id="@+id/content1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:weightSum="10">
+
+                <LinearLayout
+                    android:id="@+id/content1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical"
+                    android:weightSum="10">
 
                     <ListView
                         android:id="@+id/listview1"
@@ -42,6 +44,15 @@
                         android:layout_weight="9"
                         android:choiceMode="multipleChoice"
                         android:listSelector="#ADD8E6" />
+
+
+                    <Button
+                        android:id="@+id/elfBtn"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="right"
+                        android:layout_marginRight="24dp"
+                        android:background="@drawable/elf_64x64px" />
 
                     <Button
                         android:id="@+id/ibtn_add_dairy"
@@ -74,9 +85,11 @@
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recyclerView"
                         android:layout_width="match_parent"
-                        android:layout_height="503dp"
+                        android:layout_height="455dp"
                         android:scrollbars="vertical"
-                        android:layout_weight="6.77" />
+                        android:layout_weight="7.78" />
+
+                <!-- android:layout_weight="6.77"-->
 
                     <LinearLayout
                         android:layout_width="match_parent"

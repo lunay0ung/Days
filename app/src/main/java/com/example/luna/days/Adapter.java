@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class Adapter extends BaseAdapter
 {
 
+    ViewGroup parent;
     LayoutInflater inflater;
     Context context;
     int layout;
@@ -25,6 +26,10 @@ public class Adapter extends BaseAdapter
 
 /*    //메모 리스트
     ArrayList<Item_memo> mlist;*/
+
+
+
+
 
     public Adapter(Context context, int layout, ArrayList<Item_diary> dlist)
     {
