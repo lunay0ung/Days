@@ -7,7 +7,6 @@
     tools:context="com.example.luna.days.MainActivity">
 
     <!--아래부터 주석처리하면 탭2 보임;-->
-
     <TabHost
         android:id="@+id/tabhost"
         android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                         android:layout_marginRight="30dp"
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
-                        android:background="@drawable/colorful_compose"
+                        android:background="@drawable/writingdiary_128px"
                         android:scaleType="fitXY" />
 
                     <android.support.v4.view.ViewPager
@@ -98,63 +97,45 @@
                         android:orientation="horizontal"
                         android:weightSum="10">
 
-                        <TextView
-                            android:id="@+id/tv_open_memo"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="bottom"
+                        <Button
+                            android:id="@+id/memoBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
+                            android:layout_marginStart="200dp"
                             android:layout_marginTop="5dp"
-                            android:layout_weight="7"
+                            android:background="@drawable/writing_128px"
                             android:gravity="center_vertical"
                             android:paddingLeft="5dp"
                             android:textSize="16sp" />
 
-
-                        <ImageButton
-                            android:id="@+id/ibtn_paint"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
+                        <Button
+                            android:id="@+id/recordBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/blck_crayon_32px"
-                            android:scaleType="fitXY"
-                            app:srcCompat="@drawable/blck_crayon_32px" />
+                            android:background="@drawable/recording_128px"
+                            android:scaleType="fitXY"/>
 
-                        <ImageButton
-                            android:id="@+id/ibtn_record"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
+
+                        <Button
+                            android:id="@+id/sttBtn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/blck_rec_32px"
-                            android:scaleType="fitXY"
-                            app:srcCompat="@drawable/blck_rec_32px" />
-
-
-                        <ImageButton
-                            android:id="@+id/ibtn_stt"
-                            android:layout_width="0dp"
-                            android:layout_height="32dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/blck_mic_32px"
-                            android:scaleType="fitXY"
-                            app:srcCompat="@drawable/blck_mic_32px" />
+                            android:background="@drawable/bluemicrophone128px"
+                            android:scaleType="fitXY" />
 
                     </LinearLayout>
 

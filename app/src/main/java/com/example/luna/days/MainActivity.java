@@ -18,8 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,8 +128,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //메모 관련 필요한 아이들
     GridView gridview1, gridView2;
-    TextView tv_open_memo;
-    ImageButton ibtn_record, ibtn_paint, ibtn_stt;
+    /*TextView tv_open_memo;
+    ImageButton ibtn_record, ibtn_paint, ibtn_stt;*/
+    Button memoBtn,recordBtn, sttBtn;
     //ibtn_record: 녹음/재생
     //ibtn_stt: STT
 
@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "벌써 오후네요. 이것 저것 해야 할 일도 많고 생각이 복잡하다면, 일의 우선순위를 노트에 적어보세요. 눈 앞이 환해지고 효율이 높아질 거예요.",
                 "오늘 오후도 반짝반짝 빛나고 계신가요? 삶을 아름답게 하는 보석들은 바쁘게 달려갈 때는 보이지 않는대요. " +
                         "오히려 차분히 쉬면서 주변을 둘러보게 되면 바쁠 때는 보지 못했던 보물들을 보게 될 수 있어요.",
-                "조금 떨어져 세상을 보면 나와 다른 사람과 가축과 나무와 돌과 물이 모두 하나죠. 그래서 이 중 어느 하나를 보살피는 일도 결국은 나 자신을 보살피는 일과 같아요. 조금 아쉬운 기분이 든다면, 오늘 하루 남은 시간동안엔 스스로를 보살피는 데 게을리 하지 마시길.",
+                "조금 떨어져 세상을 보면 나와 다른 사람과 가축과 나무와 돌과 물이 모두 하나죠. 그래서 이 중 어느 하나를 보살피는 일도 결국은 나 자신을 보살피는 일과 같아요. 조금 아쉬운 기분이 든다면, 오늘 남은 오후엔 스스로를 보살피는 데 집중해보세요.",
                 "어떤 하루를 보내고 있나요? 당신이 변화시킬 수 있는 일들과 그렇지 못한 일들이 있어요. 바꿀 수 없는 일들에 마음을 쓰는 것은 효율적이지 못하겠죠. 역량에 따른 기준을 설정해 두는 건 어떨까요?"};
 
 
@@ -250,6 +250,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "비몽사몽하군요. 그래도 우리가 신에게서 받은 가장 소중한 시간이라는 선물을 잘 활용하려면 얼른 정신 차려야겠어요. " +
                         "모두 다 같이 시간이라는 공통적인 재료를 사용하더라도 어떻게 활용하느냐에 따라 각기 다른 내용의 작품을 만들어내니까요.",
                 "미래는 운명이 결정하는 것이 아니라 작은 습관들이 쌓여 만들어지는 거예요. 건강과 재물과 명예가 모두 사람들이 작게 생각하는 습관들로부터 만들어 지는 거죠. 오늘은 미래를 결정하는 데 결정적인 하루가 될 것 같군요. 예감이 좋아요."};
+
 
 
         //엘프, 수정구슬, 메시지
@@ -451,8 +452,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //메모창 열기
-        tv_open_memo = (TextView) findViewById(R.id.tv_open_memo);
-        tv_open_memo.setOnClickListener(new View.OnClickListener()
+        memoBtn = (Button) findViewById(R.id.memoBtn);
+        memoBtn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -463,13 +464,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });//setOnClickListener
 
-        //'메모를 입력하세요' 텍스트뷰에 밑줄 긋기 효과
-        SpannableString content = new SpannableString("메모를 입력하세요.");
-        content.setSpan(new UnderlineSpan(), 0, content.length(), 0); tv_open_memo.setText(content);
 
         //STT창 열기
-        ibtn_stt = (ImageButton) findViewById(R.id.ibtn_stt);
-        ibtn_stt.setOnClickListener(new View.OnClickListener() {
+        sttBtn = (Button) findViewById(R.id.sttBtn);
+        sttBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -480,8 +478,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         //녹음창 열기
-        ibtn_record = (ImageButton) findViewById(R.id.ibtn_record);
-        ibtn_record.setOnClickListener(new View.OnClickListener() {
+        recordBtn = (Button) findViewById(R.id.recordBtn);
+        recordBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -710,6 +708,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
+            //TODO
     {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -836,11 +835,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         case REQUEST_MEMO_RECORD: //오디오 메모 추가
                             String recordmemoTitle = data.getStringExtra("recordmemoTitle");
                             String recordmemoNote = data.getStringExtra("recordmemoNote");
-                            String audioUri = data.getStringExtra("audioUri");
+                            String special_audioUri = data.getStringExtra("special_audioUri");
+                            //Log.e("받은 파일주소+해시코드", special_audioUri);
 
 
                             //오디오파일이 없을 떄
-                            if(audioUri==null)
+                            if(special_audioUri==null)
                             {
                                 //텍스트 메모는 있음(텍스트 메모 없으면 취급안함)
                                 if(recordmemoTitle.length() > 0 || recordmemoNote.length()>0) //메모 제목/내용 중 하나라도 있으면 메모 생성
@@ -854,13 +854,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //오디오 파일있음
                             else
                             {
-                                Uri thisAudioUri = Uri.parse(audioUri);
-                                Log.e("오디오파일 있니", ""+thisAudioUri);
+                                Uri thisAudioUri = Uri.parse(special_audioUri);
+                                Log.e("받은 파일주소+해시코드2", ""+thisAudioUri);
 
-                                item_memo = new Item_memo(audioUri, recordmemoTitle, recordmemoNote);
-                                memoRcvAdapter.addItem(audioUri, recordmemoTitle, recordmemoNote);
+                                item_memo = new Item_memo(special_audioUri, recordmemoTitle, recordmemoNote);
+                                memoRcvAdapter.addItem(special_audioUri, recordmemoTitle, recordmemoNote);
                                 memoRcvAdapter.notifyDataSetChanged();
                             }
+
                             break;
 
                         case REQUEST_MODIFY_TXTMEMO: //텍스트 스타일 메모 수정
@@ -888,16 +889,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                         case REQUEST_MODIFY_AUIDOMEMO:
 
-
                             int recordmemo_arrayIndex = data.getExtras().getInt("arrayIndex");
                             String m_recordmemoTitle = data.getStringExtra("m_recordmemoTitle");
                             String m_recordmemoNote = data.getStringExtra("m_recordmemoNote");
-                            String m_audioUri = data.getStringExtra("m_audioUri");
+                            String m_special_audioUri = data.getStringExtra("special_audioUri");
+                            Log.e("수정->메인 받는 파일주소+해시", m_special_audioUri);
 
 
                             item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                             item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
-                            item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+                            item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
+                            Log.e("수정->메인 세팅 파일주소+해시 ", m_special_audioUri);
 
                             memoRcvAdapter.notifyDataSetChanged();
 
@@ -906,13 +908,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             {
                                 item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                                 item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
-                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
 
                                 memoRcvAdapter.notifyDataSetChanged();
                             }
 
                             //오디오파일이 없을 떄
-                            if(m_audioUri==null)
+                            if(m_special_audioUri==null)
                             {
                                 //텍스트 메모는 있음(텍스트 메모 없으면 취급안함)
                                 if(m_recordmemoTitle.length() > 0 || m_recordmemoNote.length()>0) //메모 제목/내용 중 하나라도 있으면 메모 생성
@@ -927,12 +929,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             //오디오 파일있음
                             else
                             {
-                                Uri thisAudioUri = Uri.parse(m_audioUri);
-                                Log.e("오디오파일 있니", ""+thisAudioUri);
+                                Uri thisAudioUri = Uri.parse(m_special_audioUri);
+                                Log.e("수정->메인 파일주소+해시2 URI", ""+thisAudioUri);
 
                                 item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                                 item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
-                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_audioUri);
+                                item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
 
                                 memoRcvAdapter.notifyDataSetChanged();
                             }
@@ -1011,16 +1013,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //다이어리 저장
         editor.putString("diaryDetail", jsonArray.toString());
-        Log.d("json 세이브브브브 하나",jsonArray.toString());
         editor.commit();
 
-        //메모 저장소
+
+        //텍스트 메모 저장
         SharedPreferences pref_memo = getSharedPreferences("pref_memo", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor_memo = pref_memo.edit();
 
         JSONArray jsonArray_memo = new JSONArray();
 
-        //메모 데이터의 크기만큼 jsonobject를 만든다
+        //데이터의 크기만큼 jsonobject를 만든다
         for (int i=0; i<memoRcvAdapter.item_memoList.size(); i++)
         {
             JSONObject jsonObject_memo = new JSONObject();
@@ -1033,6 +1035,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 jsonObject_memo.put(key_note, memoRcvAdapter.item_memoList.get(i).getMemo2());
 
                 jsonArray_memo.put(jsonObject_memo);
+                Toast.makeText(this, "메모 저장"+jsonObject_memo, Toast.LENGTH_SHORT).show();
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -1041,8 +1044,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         editor_memo.putString("memoDetail", jsonArray_memo.toString());
         editor_memo.commit();
-        // 여기까지(위)
+        //메모 저장 세팅 끝
 
+      /* // 오디오 메모 저장
+        SharedPreferences pref_audio = getSharedPreferences("pref_audio", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor_audio = pref_audio.edit();
+
+        JSONArray jsonArray_audio = new JSONArray();
+
+        //데이터의 크기만큼 jsonobject를 만든다
+        for (int j=0; j<memoRcvAdapter.item_memoList.size(); j++)
+        {
+            JSONObject jsonObject_audio = new JSONObject();
+
+            String akey_title = "aTitle"+j;
+            String akey_note = "aNote"+j;
+            String key_audio = "Audio"+j;
+
+            try {
+                jsonObject_audio.put(akey_title, memoRcvAdapter.item_memoList.get(j).getMemo1());
+                jsonObject_audio.put(akey_note, memoRcvAdapter.item_memoList.get(j).getMemo2());
+                jsonObject_audio.put(key_audio, memoRcvAdapter.item_memoList.get(j).getAudioUri());
+                Toast.makeText(this, "파일주소 저장됨"+memoRcvAdapter.item_memoList.get(j).getAudioUri(), Toast.LENGTH_SHORT).show();
+                //제대로 작동
+
+                jsonArray_audio.put(jsonObject_audio);
+                Toast.makeText(this, "오디오 메모 저장"+jsonObject_audio, Toast.LENGTH_SHORT).show();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }//for
+
+        editor_audio.putString("audiomemoDetail", jsonArray_audio.toString());
+        editor_audio.commit();
+        //오디오 메모 저장 세팅 끝
+*/
     }//saveState()
 
     public void restoreState()
@@ -1080,7 +1117,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Bitmap userphoto = null;
 
                 try {
-                    Item_diary item_diary;
+                    //Item_diary item_diary;
                     userphoto = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
 
                     adapter.addItem(new Item_diary(date, place, event, note, userphoto, uri ));
@@ -1095,11 +1132,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //Log.d("restoreState","불러오기 하나"+pref.getString("diaryDetail",""));
+
         adapter.notifyDataSetChanged();
 
 
-        ///메모
+        ///텍스트 메모
         SharedPreferences pref_memo = getSharedPreferences("pref_memo", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor_memo = pref_memo.edit();
 
@@ -1122,7 +1159,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String note = jsonObject_memo.getString(key_note);
 
                 try {
-                    Item_memo item_memo;
+                   // Item_memo item_memo;
                     memoRcvAdapter.addItem(new Item_memo(title, note));
 
                 } catch (Exception e) {
@@ -1133,7 +1170,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         memoRcvAdapter.notifyDataSetChanged();
-    }
+        //메모 끝
+
+
+     /*   //오디오 메모
+        SharedPreferences pref_audio = getSharedPreferences("pref_audio", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor_audio = pref_audio.edit();
+
+        try {
+            JSONArray jsonArray_audio = new JSONArray(pref_audio.getString("audiomemoDetail",""));
+
+            if(jsonArray_audio.length() !=0)
+            {
+                editor_audio.clear();
+                editor_audio.commit();
+            }
+
+            for(int j =0; j <jsonArray_audio.length(); j++)
+            {
+                JSONObject jsonObject_audio = jsonArray_audio.getJSONObject(j);
+                String akey_title = "aTitle"+j;
+                String akey_note = "aNote"+j;
+                String key_audio = "Audio"+j;
+
+                String atitle = jsonObject_audio.getString(akey_title);
+                String anote = jsonObject_audio.getString(akey_note);
+                String audio = jsonObject_audio.getString(key_audio);
+                Toast.makeText(this, "파일주소 불러옴"+audio, Toast.LENGTH_SHORT).show(); //제대로 작동
+
+
+                try {
+
+                    if(audio ==null)
+                    {
+                        memoRcvAdapter.addItem(new Item_memo(atitle, anote));
+                    }
+                    else
+                    {
+                        memoRcvAdapter.addItem(new Item_memo(audio, atitle, anote));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }//for
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        memoRcvAdapter.notifyDataSetChanged();//오디오 메모 끝*/
+
+    }//restoreState
 
     //////////////////저장 * 재개 끝
 

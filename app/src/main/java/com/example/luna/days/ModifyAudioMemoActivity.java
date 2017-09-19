@@ -3,7 +3,6 @@ package com.example.luna.days;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -98,15 +97,16 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
 
         String title = getDataIntent.getExtras().getString("title");
         String note = getDataIntent.getExtras().getString("note");
-        String audioUri = getDataIntent.getExtras().getString("audioUri");
-        Log.e("수정꺼 AudioURI",audioUri);
+        String special_audioUri = getDataIntent.getExtras().getString("special_audioUri");
+        Log.e("수정액티비티에서 받은 파일주소+해시코드",special_audioUri);
         arrayIndex = getDataIntent.getExtras().getInt("arrayIndex", 0);
 
         //자료 세팅
         ed_memo_title.setText(title);
         ed_memo_note.setText(note);
-        RECORDED_FILE = audioUri;
+        RECORDED_FILE = special_audioUri;
         file = new File(RECORDED_FILE);
+        Log.e("R파일주소+해시2 @수정액티비티", RECORDED_FILE);
 
 
         //파일 삭제
@@ -176,18 +176,27 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.memoDoneBtn:
+                Intent getDataIntent = getIntent();
+                String special_audioUri = getDataIntent.getExtras().getString("special_audioUri");
+                this.RECORDED_FILE = special_audioUri;
+                file = new File(RECORDED_FILE);
+
+                Log.e("수정->메인 보낼 파일주소+해시", RECORDED_FILE);
 
                 Intent modifiedIntent = new Intent(getApplicationContext(), MainActivity.class);
+
                 Log.e("수정에서 메인으로 Intent 보내기전0",""+file);
                 if (file != null)
                 {
                     Log.e("수정에서 메인으로 Intent 보내기전1",""+file);
                    // if (file.exists()) {
                         Log.e("수정에서 메인으로 Intent 보내기전2",""+file);
-                        Uri m_audioUri = Uri.fromFile(file);
-                        RECORDED_FILE = m_audioUri.toString();
+
+                     //   Uri m_audioUri = Uri.fromFile(file);
+                    //    RECORDED_FILE = m_audioUri.toString();
                        // modifiedIntent.putExtra("m_audioUri", m_audioUri.toString());
-                        modifiedIntent.putExtra("m_audioUri", RECORDED_FILE);
+                        modifiedIntent.putExtra("special_audioUri", RECORDED_FILE);
+                    Log.e("수정->메인 보내는 파일주소+해시", RECORDED_FILE);
                   //  }
                     Log.e("수정에서 메인으로 Intent 보내기전3",""+file);
                     modifiedIntent.putExtra("arrayIndex", arrayIndex);
@@ -298,10 +307,15 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
 
         try {
 
+            Intent getDataIntent = getIntent();
+            String special_audioUri = getDataIntent.getExtras().getString("special_audioUri");
+
+
             File sdcard = Environment.getExternalStorageDirectory();
             file = new File(sdcard, "recorded.mp4");
-            RECORDED_FILE = file.getAbsolutePath();
+            this.RECORDED_FILE = special_audioUri;
            mPlayer.setDataSource(RECORDED_FILE);
+            Log.e("파일주소+해시3, 수정액티비티", RECORDED_FILE);
            mPlayer.prepare();
 
 

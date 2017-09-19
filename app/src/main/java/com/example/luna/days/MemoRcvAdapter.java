@@ -169,8 +169,8 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
             modifyAudioMemoIntent.putExtra("note", item_memoList.get(selected_position).getMemo2());
 
             //Uri라고 써있지만 실은 String값임
-            modifyAudioMemoIntent.putExtra("audioUri", item_memoList.get(selected_position).getAudioUri());
-            Log.e("메인꺼 AudioURI",item_memoList.get(selected_position).getAudioUri());
+            modifyAudioMemoIntent.putExtra("special_audioUri", item_memoList.get(selected_position).getAudioUri());
+            Log.e("메인에서 받은 파일주소+해시/어댑터",item_memoList.get(selected_position).getAudioUri());
             modifyAudioMemoIntent.putExtra("arrayIndex", selected_position);
 
             ((Activity) context).startActivityForResult(modifyAudioMemoIntent, MainActivity.REQUEST_MODIFY_AUIDOMEMO);

@@ -3,7 +3,6 @@ package com.example.luna.days;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -168,14 +167,29 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.memoDoneBtn:
+
+                //현재 녹음이 진행되고 있는 상태에서 메모 done버튼을 눌러도 오류가 생기지 않으며, 버튼이 눌리기 직전까지 녹음되던 것이 저장됨
+                if(mRecState ==RECORDING)
+                {
+                    mRecState = REC_STOP;
+                    stopRec();
+                    updateUI();
+                }
+
+
                 Intent recordIntent = new Intent(getApplicationContext(), MainActivity.class);
 
                if(file != null) //이렇게 먼저 걸러내지 않으면 file 자체를 확인하지 못함. 파일이 전역변수인데 왜 그런지 모르겠음. null이라고 안 되어 잇어서 그런가?
                {
                    if(file.exists())
                    {
-                       Uri audioUri = Uri.fromFile(file);
-                       recordIntent.putExtra("audioUri", audioUri.toString());
+                       //해시코드를 부여한 file의 uri를 넘김
+                       RECORDED_FILE =file.getAbsolutePath()+this.hashCode();
+                       Log.e("넘길 파일주소+해시코드", RECORDED_FILE); //-> 밑에서 만든 애랑 같음
+
+                       recordIntent.putExtra("special_audioUri", RECORDED_FILE.toString());
+                       Log.e("실제로 넘기는 파일주소+해시코드", RECORDED_FILE.toString()); //-> 일치
+
                    }
                    recordIntent.putExtra("recordmemoTitle", ed_memo_title.getText().toString());
                    recordIntent.putExtra("recordmemoNote", ed_memo_note.getText().toString());
@@ -218,7 +232,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         // SD카드에 디렉토리를 만든다.
         File sdcard = Environment.getExternalStorageDirectory();
         file = new File(sdcard, "recorded.mp4");
-        RECORDED_FILE = file.getAbsolutePath();
+        RECORDED_FILE = file.getAbsolutePath()+hashCode();
+        Log.e("파일주소 생성+해시코드", RECORDED_FILE);
 
         if(mRecState==REC_STOP)
         {
@@ -329,7 +344,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
         try {
             mPlayer.setDataSource(RECORDED_FILE);
-            Log.e("오디오 데이터소스", RECORDED_FILE);///storage/emulated/0/recorded.mp4
+            Log.e("오디오 데이터소스", RECORDED_FILE);
             /*Calling setDataSource(FileDescriptor), or setDataSource(String), or setDataSource(Context, Uri),
             or setDataSource(FileDescriptor, long, long), or setDataSource(MediaDataSource)
             transfers a MediaPlayer object in the Idle state to the Initialized state.*/
