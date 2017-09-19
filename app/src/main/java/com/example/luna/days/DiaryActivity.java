@@ -57,6 +57,8 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
         //EditText 아이디
         ed_diaryevent = (EditText) findViewById(R.id.ed_diaryevent);
         ed_diaryplace = (EditText) findViewById(R.id.ed_diaryplace);
@@ -442,6 +444,13 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
             } ///switch end
         } // else end
     } //onActivityResult end
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
+
 
 /*
 

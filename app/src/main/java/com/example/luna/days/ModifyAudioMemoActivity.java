@@ -80,7 +80,7 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_audio_memo);
 
-
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
 
         //변수 선언
         memoDoneBtn = (Button) findViewById(R.id.memoDoneBtn);
@@ -387,6 +387,10 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
 
     }//updateUI
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
 
 }

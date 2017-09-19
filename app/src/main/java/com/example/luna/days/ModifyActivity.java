@@ -76,6 +76,8 @@ public class ModifyActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
         //다이어리 수정하는 modify activity에 있는 뷰
          m_iv_diarybasic = (ImageView) findViewById(R.id.m_iv_diarybasic);
          m_ed_diarydate = (EditText) findViewById(R.id.m_ed_diarydate);
@@ -550,5 +552,9 @@ public class ModifyActivity extends AppCompatActivity implements View.OnClickLis
         } // else end
     } //onActivityResult end
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
 }

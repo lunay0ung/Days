@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         startActivity(new Intent(this, SplashActivity.class));
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
 
         //탭호스트 작동시키기
         //http://recipes4dev.tistory.com/115
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 "미래는 운명이 결정하는 것이 아니라 작은 습관들이 쌓여 만들어지는 거예요. 건강과 재물과 명예가 모두 사람들이 작게 생각하는 습관들로부터 만들어 지는 거죠. 오늘은 미래를 결정하는 데 결정적인 하루가 될 것 같군요. 예감이 좋아요."};
 
 
-
+        //엘프, 수정구슬, 메시지
         elfBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -271,6 +272,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //다이얼로그 생성
                 final Dialog elf_dialog = builder.create();
+
+                //다이얼로그 애니메이션 세팅
+                elf_dialog.getWindow().getAttributes().windowAnimations = R.style.FortuneTellerDialogAnimation;
 
                 //다이얼로그 보여주기
                 elf_dialog.show();
@@ -1153,6 +1157,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     출처: http://arabiannight.tistory.com/entry/안드로이드Android-SharedPreferences-사용-예제 [아라비안나이트]
      */
 
-
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
 
 } // Main Activity 클래스 닫기

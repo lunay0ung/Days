@@ -23,4 +23,16 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
+    <style name="FortuneTellerDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowAnimationStyle">@style/FortuneTellerDialogAnimation</item>
+    </style>
+
+    <style name="FortuneTellerDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/dialog_fadein</item>
+        <item name="android:windowExitAnimation">@anim/dialog_fadeout</item>
+    </style>
+
+
+
+
 </resources>

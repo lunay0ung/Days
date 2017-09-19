@@ -22,6 +22,8 @@ public class ModifyTxtMemoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_modify_txt_memo);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
         //변수 선언
         memoDoneBtn = (Button) findViewById(R.id.memoDoneBtn);
 
@@ -80,5 +82,11 @@ public class ModifyTxtMemoActivity extends AppCompatActivity {
             }//onClick
         });//setOnClickListener
 
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
     }
 }

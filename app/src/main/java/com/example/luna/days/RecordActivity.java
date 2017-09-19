@@ -130,6 +130,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
 /*        // SD카드에 디렉토리를 만든다.
         File sdcard = Environment.getExternalStorageDirectory();
         file = new File(sdcard, "recorded.mp4");
@@ -415,4 +417,12 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         } else if (mPlayerState == PLAYING);
             //mBtnStartPlay.setText("Stop");
     }//updateUI
+
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
+
 }//RecordActivity

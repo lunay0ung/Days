@@ -27,6 +27,8 @@ public class STTActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stt);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
         ed_memo_note = (EditText) findViewById(R.id.ed_memo_note);
         ed_memo_title = (EditText) findViewById(R.id.ed_memo_title);
 
@@ -128,5 +130,11 @@ public class STTActivity extends AppCompatActivity {
 
         }
     };//RecognitionListener
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
+    }
 
 }//STTActivity

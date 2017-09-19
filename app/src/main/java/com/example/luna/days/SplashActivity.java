@@ -26,6 +26,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        this.overridePendingTransition(R.anim.start_enter, R.anim.start_exit);
+
         imageView = (ImageView) findViewById(R.id.imageView);
         progressLoading = (ProgressBar) findViewById(R.id.progressLoading);
         tv_splash = (TextView) findViewById(R.id.tv_splash);
@@ -138,6 +140,12 @@ public class SplashActivity extends Activity {
             return progressStatus;
 
         }
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(R.anim.end_enter, R.anim.end_exit);
     }
 
 }
