@@ -187,19 +187,22 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                 Intent modifiedIntent = new Intent(getApplicationContext(), MainActivity.class);
 
                 Log.e("수정에서 메인으로 Intent 보내기전0",""+file);
-                if (file != null)
+                Log.e("메모 저장할 때", ""+file);
+                if (file !=null) //파일이 있으면 다 보낸다
                 {
                     Log.e("수정에서 메인으로 Intent 보내기전1",""+file);
-                   // if (file.exists()) {
+                    //if (file.exists()) {
                         Log.e("수정에서 메인으로 Intent 보내기전2",""+file);
 
                      //   Uri m_audioUri = Uri.fromFile(file);
                     //    RECORDED_FILE = m_audioUri.toString();
-                       // modifiedIntent.putExtra("m_audioUri", m_audioUri.toString());
+                        //modifiedIntent.putExtra("m_audioUri", m_audioUri.toString());
                         modifiedIntent.putExtra("special_audioUri", RECORDED_FILE);
                     Log.e("수정->메인 보내는 파일주소+해시", RECORDED_FILE);
-                  //  }
+                   // }
                     Log.e("수정에서 메인으로 Intent 보내기전3",""+file);
+
+
                     modifiedIntent.putExtra("arrayIndex", arrayIndex);
                     modifiedIntent.putExtra("m_recordmemoTitle", ed_memo_title.getText().toString());
                     Log.e("텍스트메모 제목", ed_memo_title.getText().toString());
@@ -209,7 +212,7 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                     finish();
                 }
                 else
-                {
+                {   //파일이 없으면 제목과 내용만 보낸다
                     modifiedIntent.putExtra("arrayIndex", arrayIndex);
                     modifiedIntent.putExtra("m_recordmemoTitle", ed_memo_title.getText().toString());
                     Log.e("텍스트메모 제목",  ed_memo_title.getText().toString());
@@ -243,12 +246,17 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                                 {
                                     file.delete();
                                     Log.e("파일있음?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
-                                    RECORDED_FILE = null;
+
+                                    ed_memo_title.setText("오디오 파일 삭제");
+                                    mTvPlayMaxPoint.setText("00:00");
+
+                                    RECORDED_FILE= null; //여기서 null을 넣어도 소용없음, 어차피 저장하는 case는 delete위에 있잖아
+                                  //  Log.e("파일삭제하면 뭐가들었나", RECORDED_FILE); //->nullpointerException
                                     //모든 뷰 객체를 삭제한다
-                                    mPlayProgressBar.setVisibility(View.GONE);
-                                    playRecFileBtn.setVisibility(View.GONE);
-                                    deleteRecFileBtn.setVisibility(View.GONE);
-                                    mTvPlayMaxPoint.setVisibility(View.GONE);
+//                                    mPlayProgressBar.setVisibility(View.GONE);
+//                                    playRecFileBtn.setVisibility(View.GONE);
+//                                    deleteRecFileBtn.setVisibility(View.GONE);
+//                                    mTvPlayMaxPoint.setVisibility(View.GONE);
                                 }
                             }
                         })
@@ -267,7 +275,6 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                 alertDialog.show();
 
                 break;
-
         }//switch
     }//onClick
 

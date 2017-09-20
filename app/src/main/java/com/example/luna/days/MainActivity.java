@@ -40,6 +40,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -856,15 +857,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.e("수정->메인 받는 파일주소+해시", m_special_audioUri);
 
 
-                    item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
-                    item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
-                    item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
-                    Log.e("수정->메인 세팅 파일주소+해시 ", m_special_audioUri);
+                    File file = new File(m_special_audioUri);
+                    Log.e("메인, 오디오파일 삭제후", ""+file.exists()); //->false
 
-                    memoRcvAdapter.notifyDataSetChanged();
+                    //오디오 파일이 있다면 ..새로 추가
+                    if(file.exists())
+                    {
+                        item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
+                        item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
+                        item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
+                        Log.e("수정->메인 세팅 파일주소+해시 ", m_special_audioUri);
+
+                        memoRcvAdapter.notifyDataSetChanged();
+                    }
 
                     //**  //텍스트는 아예 없고 오디오만 있을 때
-                    if (m_recordmemoTitle.length() < 0 && m_recordmemoNote.length() < 0) {
+                    if (m_recordmemoTitle.length() < 0 && m_recordmemoNote.length() < 0 && file.exists() /*파일.exist추가*/) {
                         item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                         item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
                         item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
@@ -873,11 +881,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     //오디오파일이 없을 떄
-                    if (m_special_audioUri == null) {
+                    //if (m_special_audioUri == null) {
+                    if(!file.exists())
+                    {
                         //텍스트 메모는 있음(텍스트 메모 없으면 취급안함)
                         if (m_recordmemoTitle.length() > 0 || m_recordmemoNote.length() > 0) //메모 제목/내용 중 하나라도 있으면 메모 생성
                         {
-
                             item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                             item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
                             memoRcvAdapter.notifyDataSetChanged();
@@ -886,15 +895,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     //오디오 파일있음
                     else {
-                        Uri thisAudioUri = Uri.parse(m_special_audioUri);
-                        Log.e("수정->메인 파일주소+해시2 URI", "" + thisAudioUri);
 
                         item_memoList.get(recordmemo_arrayIndex).setMemo1(m_recordmemoTitle);
                         item_memoList.get(recordmemo_arrayIndex).setMemo2(m_recordmemoNote);
                         item_memoList.get(recordmemo_arrayIndex).setAudioUri(m_special_audioUri);
 
                         memoRcvAdapter.notifyDataSetChanged();
-                    }
+                        }
+
+
                     break;
 
 
