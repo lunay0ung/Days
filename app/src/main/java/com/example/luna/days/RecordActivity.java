@@ -207,8 +207,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.deleteRecFileBtn:
-                //TODO 삭제 기능되게 하기 포기하고 그냥 정지로 할까 ㅠㅠㅠ.../.
+                File sdcard = Environment.getExternalStorageDirectory();
+                file = new File(sdcard, "recorded.mp4");
+                RECORDED_FILE = file.getAbsolutePath()+hashCode();
+                file = new File(RECORDED_FILE);
+                Log.e("삭제할 파일주소", RECORDED_FILE);
                 Log.e("오디오파일 존재여부", ""+file.exists());
+
                 if( file.exists()) {
                     file.delete();
                    Log.e("오디오파일삭제됐냐?",""+file.exists());

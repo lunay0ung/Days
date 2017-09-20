@@ -35,7 +35,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -980,12 +979,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < memoRcvAdapter.item_memoList.size(); i++) {
             JSONObject jsonObject_memo = new JSONObject();
 
-            //Log.e("파일존재여부 검사", ""+memoRcvAdapter.item_memoList.get(i).getAudioUri()); //예시: /storage/emulated/0/recorded.mp41118451336
 
             String key_audio = "Audio" + i;
             String key_title = "Title" + i;
             String key_note = "Note" + i;
-
 
             try {
                 jsonObject_memo.put(key_title, memoRcvAdapter.item_memoList.get(i).getMemo1());
@@ -994,131 +991,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Log.e("내용 검사", key_note);
 
                 String audioUri = memoRcvAdapter.item_memoList.get(i).getAudioUri();
-
-
-                    jsonObject_memo.put(key_audio, memoRcvAdapter.item_memoList.get(i).getAudioUri());
-
-                Log.e("오디오Uri", key_audio);
-
-
-                Log.e("오디오", "" + memoRcvAdapter.item_memoList.get(i).getAudioUri());
+                jsonObject_memo.put(key_audio, memoRcvAdapter.item_memoList.get(i).getAudioUri());
                 jsonArray_memo.put(jsonObject_memo);
-                //Toast.makeText(this, "오디오 메모 저장"+jsonObject_memo, Toast.LENGTH_SHORT).show();
-                //Toast.makeText(this, "파일주소 저장됨"+memoRcvAdapter.item_memoList.get(i).getAudioUri(), Toast.LENGTH_SHORT).show();
-                // Log.e("파일 저장","jsonArray"+jsonArray_memo);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-          /*  //오디오 파일이 있으면
-            if(memoRcvAdapter.item_memoList.get(i).getAudioUri() != null)
-
-            {
-                String key_audio = "Audio"+i;
-                String key_title = "Title"+i;
-                String key_note = "Note"+i;
-                try {
-                    jsonObject_memo.put(key_title, memoRcvAdapter.item_memoList.get(i).getMemo1());
-                    jsonObject_memo.put(key_note, memoRcvAdapter.item_memoList.get(i).getMemo2());
-                    jsonObject_memo.put(key_audio, memoRcvAdapter.item_memoList.get(i).getAudioUri());
-                    jsonArray_memo.put(jsonObject_memo);
-                    //Toast.makeText(this, "오디오 메모 저장"+jsonObject_memo, Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(this, "파일주소 저장됨"+memoRcvAdapter.item_memoList.get(i).getAudioUri(), Toast.LENGTH_SHORT).show();
-                    Log.e("파일 저장","jsonArray"+jsonArray_memo);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            if(memoRcvAdapter.item_memoList.get(i).getAudioUri() ==null)
-            {
-                String key_title = "Title"+i;
-                String key_note = "Note"+i;
-
-                try {
-                    jsonObject_memo.put(key_title, memoRcvAdapter.item_memoList.get(i).getMemo1());
-                    jsonObject_memo.put(key_note, memoRcvAdapter.item_memoList.get(i).getMemo2());
-
-                    jsonArray_memo.put(jsonObject_memo);
-                    //Toast.makeText(this, "텍스트 메모 저장"+jsonObject_memo, Toast.LENGTH_SHORT).show();
-                    Log.e("파일 저장","jsonArray"+jsonArray_memo);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-            //여기까진 됨. 불러오는 게 안 됨.*/
         }//for
 
         editor_memo.putString("memoDetail", jsonArray_memo.toString());
         editor_memo.commit();
-        Log.e("저장여부 확인", jsonArray_memo.toString());
         //테스트 메모 저장 세팅 끝
-
-
-
-   /*     //텍스트 메모 저장
-        SharedPreferences pref_memo = getSharedPreferences("pref_memo", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor_memo = pref_memo.edit();
-
-        JSONArray jsonArray_memo = new JSONArray();
-
-        //데이터의 크기만큼 jsonobject를 만든다
-        for (int i=0; i<memoRcvAdapter.item_memoList.size(); i++)
-        {
-            JSONObject jsonObject_memo = new JSONObject();
-
-            String key_title = "Title"+i;
-            String key_note = "Note"+i;
-
-            try {
-                jsonObject_memo.put(key_title, memoRcvAdapter.item_memoList.get(i).getMemo1());
-                jsonObject_memo.put(key_note, memoRcvAdapter.item_memoList.get(i).getMemo2());
-
-                jsonArray_memo.put(jsonObject_memo);
-                Toast.makeText(this, "메모 저장"+jsonObject_memo, Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }//for
-
-        editor_memo.putString("memoDetail", jsonArray_memo.toString());
-        editor_memo.commit();
-        //메모 저장 세팅 끝
-
-       // 오디오 메모 저장
-        SharedPreferences pref_audio = getSharedPreferences("pref_audio", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor_audio = pref_audio.edit();
-
-        JSONArray jsonArray_audio = new JSONArray();
-
-        //데이터의 크기만큼 jsonobject를 만든다
-        for (int j=0; j<memoRcvAdapter.item_memoList.size(); j++)
-        {
-            JSONObject jsonObject_audio = new JSONObject();
-
-            String akey_title = "aTitle"+j;
-            String akey_note = "aNote"+j;
-            String key_audio = "Audio"+j;
-
-            try {
-                jsonObject_audio.put(akey_title, memoRcvAdapter.item_memoList.get(j).getMemo1());
-                jsonObject_audio.put(akey_note, memoRcvAdapter.item_memoList.get(j).getMemo2());
-                jsonObject_audio.put(key_audio, memoRcvAdapter.item_memoList.get(j).getAudioUri());
-                //Toast.makeText(this, "파일주소 저장됨"+memoRcvAdapter.item_memoList.get(j).getAudioUri(), Toast.LENGTH_SHORT).show();
-                //제대로 작동
-
-                jsonArray_audio.put(jsonObject_audio);
-              //  Toast.makeText(this, "오디오 메모 저장"+jsonObject_audio, Toast.LENGTH_SHORT).show();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }//for
-
-        editor_audio.putString("audiomemoDetail", jsonArray_audio.toString());
-        editor_audio.commit();
-        //오디오 메모 저장 세팅 끝*/
     }//saveState()
 
     public void restoreState() {
@@ -1204,26 +1086,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String note = jsonObject_memo.getString(key_note);
                     audio = jsonObject_memo.getString(key_audio);
 
-                    Toast.makeText(this, "파일주소 불러옴" + audio, Toast.LENGTH_SHORT).show(); //제대로 작동
-                    Log.e("파일 복원", "jsonArray" + jsonArray_memo);
                     try {
                         memoRcvAdapter.addItem(audio, title, note);
                         // memoRcvAdapter.addItem(new Item_memo(audio, title, note)); ...아 이것때문에 몇시간 날림 ㅡㅡ..
-                        Toast.makeText(this, "오디오 메모 복원", Toast.LENGTH_SHORT).show();
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 } else {
-
-
-//                if(!(jsonObject_memo.has(key_audio))){
-//                    Log.e("몇번올까?2","누가올까?"+jsonObject_memo);
-//                    Log.e("오냐마냐1","");
-//                }
-
-
                     Log.e("오냐마냐2", "kkkk");
                     String key_title = "Title" + i;
                     String key_note = "Note" + i;
@@ -1231,49 +1102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String title = jsonObject_memo.getString(key_title);
                     String note = jsonObject_memo.getString(key_note);
                     memoRcvAdapter.addItem(new Item_memo(title, note));
-                    Toast.makeText(this, "텍스트 메모 복원", Toast.LENGTH_SHORT).show();
 
-
-                }
-                //  }
-
-            }//for
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        memoRcvAdapter.notifyDataSetChanged();
-        //메모 끝
-
-/*
-
-        ///텍스트 메모 복원
-        SharedPreferences pref_memo = getSharedPreferences("pref_memo", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor_memo = pref_memo.edit();
-
-        try {
-            JSONArray jsonArray_memo = new JSONArray(pref_memo.getString("memoDetail",""));
-
-            if(jsonArray_memo.length() !=0)
-            {
-                editor_memo.clear();
-                editor_memo.commit();
-            }
-
-            for(int i =0; i <jsonArray_memo.length(); i++)
-            {
-                JSONObject jsonObject_memo = jsonArray_memo.getJSONObject(i);
-                String key_title = "Title"+i;
-                String key_note = "Note"+i;
-
-                String title = jsonObject_memo.getString(key_title);
-                String note = jsonObject_memo.getString(key_note);
-
-                try {
-
-                    memoRcvAdapter.addItem(new Item_memo(title, note));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }//for
         } catch (JSONException e) {
@@ -1281,58 +1110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         memoRcvAdapter.notifyDataSetChanged();
         //메모 끝
-
-
-        //오디오 메모 복원
-        SharedPreferences pref_audio = getSharedPreferences("pref_audio", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor_audio = pref_audio.edit();
-
-        try {
-            JSONArray jsonArray_audio = new JSONArray(pref_audio.getString("audiomemoDetail",""));
-
-            if(jsonArray_audio.length() !=0)
-            {
-                editor_audio.clear();
-                editor_audio.commit();
-            }
-
-            for(int j =0; j <jsonArray_audio.length(); j++)
-            {
-                JSONObject jsonObject_audio = jsonArray_audio.getJSONObject(j);
-                String akey_title = "aTitle"+j;
-                String akey_note = "aNote"+j;
-                String key_audio = "Audio"+j;
-                Log.e("오디오 주소 검사key_audio", key_audio); //주소가 아니라 Audio0 이런 식으로 나옴
-
-                String atitle = jsonObject_audio.getString(akey_title);
-                String anote = jsonObject_audio.getString(akey_note);
-                String audio = jsonObject_audio.getString(key_audio);
-                //Toast.makeText(this, "파일주소 불러옴"+audio, Toast.LENGTH_SHORT).show(); //제대로 작동
-                Log.e("audio값 검사", audio); //예시 /storage/emulated/0/recorded.mp41121651864
-
-                try {
-
-                    if(audio.length()<0)
-
-                    {
-                       // memoRcvAdapter.addItem(new Item_memo(atitle, anote));
-                        memoRcvAdapter.addItem(atitle, anote);
-                    }
-                    else
-                    {
-                        memoRcvAdapter.addItem(audio, atitle, anote);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }//for
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        memoRcvAdapter.notifyDataSetChanged();//오디오 메모 끝
-*/
-
     }//restoreState
 
     //////////////////저장 * 재개 끝

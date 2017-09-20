@@ -8,9 +8,11 @@
     tools:context="com.example.luna.days.SplashActivity">
  <!--   android:background="#EEE"-->
 <!-- android:background="@drawable/default_img"-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:weightSum="1">
 
@@ -18,11 +20,14 @@
             android:id="@+id/tv_splash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="70dp"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/progressLoading"
+            android:layout_marginTop="111dp"
             android:layout_weight="0.07"
             android:fontFamily="cursive"
             android:gravity="center"
             android:text="Make Your Days Special"
+            android:textColor="@android:color/black"
             android:textSize="30sp"
             android:textStyle="italic" />
 
@@ -30,8 +35,9 @@
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_splash"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="5dp"
             android:background="@drawable/default_img"
             app:srcCompat="@drawable/default_img" />
 
@@ -45,7 +51,7 @@
             android:max="3"
             android:progressBackgroundTint="@color/colorPrimary"
             android:progressTint="@color/colorPrimaryDark" />
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

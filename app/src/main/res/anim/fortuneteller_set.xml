@@ -26,7 +26,7 @@
             android:toYScale="2.0"
         />
 
-    <rotate
+<!--    <rotate
         android:fromDegrees="-20"
         android:toDegrees="20"
         android:pivotY="0"
@@ -34,7 +34,7 @@
         android:repeatCount="30"
         android:repeatMode="reverse"
         android:duration="1000"
-        />
+        />-->
 
 </set>
 
