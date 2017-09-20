@@ -277,13 +277,26 @@ public class MemoRcvAdapter extends RecyclerView.Adapter{
     //오디오 스타일 메모 추가
     public void addItem(String fileName, String title, String note)
     {
+        Log.e("복원 후 여기에 오는가?","온다면 오디오는?"+fileName);
         Item_memo item_memo = new Item_memo(fileName, title, note);
         item_memo.setType(AUDIO_TYPE);
         item_memo.setMemo1(title);
         item_memo.setMemo2(note);
         item_memo.setAudioUri(fileName);
         item_memoList.add(item_memo);
+
     }
+
+    public void addItem(String title, String note)
+    {
+        Item_memo item_memo = new Item_memo(title, note);
+        item_memo.setType(TEXT_TYPE);
+        item_memo.setMemo1(title);
+        item_memo.setMemo2(note);
+        item_memoList.add(item_memo);
+    }
+
+
 
 
 
