@@ -158,6 +158,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
         switch (view.getId())
         {
+
             case R.id.recordBtn: //녹음 시작
                 mBtnStartRecOnClick();
                 break;
@@ -167,6 +168,12 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.memoDoneBtn:
+
+                File sdcard = Environment.getExternalStorageDirectory();
+                file = new File(sdcard, hashCode()+"recorded.mp4");
+                RECORDED_FILE = file.getAbsolutePath();
+                file = new File(RECORDED_FILE);
+                Log.e("메인에 보낼 파일주소", RECORDED_FILE);
 
                 //현재 녹음이 진행되고 있는 상태에서 메모 done버튼을 눌러도 오류가 생기지 않으며, 버튼이 눌리기 직전까지 녹음되던 것이 저장됨
                 if(mRecState ==RECORDING)
@@ -184,7 +191,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                    if(file.exists())
                    {
                        //해시코드를 부여한 file의 uri를 넘김
-                       RECORDED_FILE =file.getAbsolutePath()+this.hashCode();
+                       RECORDED_FILE = file.getAbsolutePath();
                        Log.e("넘길 파일주소+해시코드", RECORDED_FILE); //-> 밑에서 만든 애랑 같음
 
                        recordIntent.putExtra("special_audioUri", RECORDED_FILE.toString());
@@ -207,9 +214,9 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.deleteRecFileBtn:
-                File sdcard = Environment.getExternalStorageDirectory();
-                file = new File(sdcard, "recorded.mp4");
-                RECORDED_FILE = file.getAbsolutePath()+hashCode();
+                sdcard = Environment.getExternalStorageDirectory();
+                file = new File(sdcard, hashCode()+"recorded.mp4");
+                RECORDED_FILE = file.getAbsolutePath();
                 file = new File(RECORDED_FILE);
                 Log.e("삭제할 파일주소", RECORDED_FILE);
                 Log.e("오디오파일 존재여부", ""+file.exists());
@@ -236,8 +243,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     {
         // SD카드에 디렉토리를 만든다.
         File sdcard = Environment.getExternalStorageDirectory();
-        file = new File(sdcard, "recorded.mp4");
-        RECORDED_FILE = file.getAbsolutePath()+hashCode();
+        file = new File(sdcard, hashCode()+"recorded.mp4");
+        RECORDED_FILE = file.getAbsolutePath();
         Log.e("파일주소 생성+해시코드", RECORDED_FILE);
 
         if(mRecState==REC_STOP)
@@ -344,7 +351,6 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
         mPlayer.setOnCompletionListener(RecordActivity.this);
         //Register a callback to be invoked when the end of a media source has been reached during playback.
-
 
 
         try {

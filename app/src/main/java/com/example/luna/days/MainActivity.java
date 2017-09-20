@@ -797,6 +797,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String recordmemoTitle = data.getStringExtra("recordmemoTitle");
                     String recordmemoNote = data.getStringExtra("recordmemoNote");
                     String special_audioUri = data.getStringExtra("special_audioUri"); //예시: /storage/emulated/0/recorded.mp41120276096
+
+
                     //Log.e("받은 파일주소+해시코드", special_audioUri);
 
 

@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 
 public class ModifyAudioMemoActivity extends AppCompatActivity implements View.OnClickListener, MediaPlayer.OnCompletionListener {
 
@@ -241,7 +242,7 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                                     Log.e("파일삭제",""+file.exists());
                                 {
                                     file.delete();
-                                    Log.e("파일삭제됨?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
+                                    Log.e("파일있음?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
                                     RECORDED_FILE = null;
                                     //모든 뷰 객체를 삭제한다
                                     mPlayProgressBar.setVisibility(View.GONE);
@@ -300,25 +301,28 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
             mPlayer.reset();
         }
 
+        mPlayer = new MediaPlayer();
         mPlayer.setOnCompletionListener(ModifyAudioMemoActivity.this);
         //Register a callback to be invoked when the end of a media source has been reached during playback.
 
-
-
         try {
-
             Intent getDataIntent = getIntent();
             String special_audioUri = getDataIntent.getExtras().getString("special_audioUri");
+            RECORDED_FILE = special_audioUri;
 
 
-            File sdcard = Environment.getExternalStorageDirectory();
-            file = new File(sdcard, "recorded.mp4");
-            this.RECORDED_FILE = special_audioUri;
-           mPlayer.setDataSource(RECORDED_FILE);
             Log.e("파일주소+해시3, 수정액티비티", RECORDED_FILE);
-           mPlayer.prepare();
+
+            File file2play = new File(RECORDED_FILE);
+          //  String file2playStr = file2play.getAbsolutePath();
+          //  Log.e("파일주소 확인", file2playStr);
+            FileInputStream fis = new FileInputStream(file2play);
+            FileDescriptor fd = fis.getFD();
 
 
+            mPlayer.setDataSource(fd);
+
+            mPlayer.prepare();
 
             /*{Idle, Prepared, Started, Paused, PlaybackCompleted, Error}*/
 
@@ -361,12 +365,15 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
             try {
                 // SeekBar의 상태를 0.1초마다 체크
                 mProgressHandler2.sendEmptyMessageDelayed(0, 100);
+
+
                 mPlayer.start();
             } catch (Exception e) {
                 Toast.makeText(this, "error : " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }//startPlay
+
 
 
     //재생중지
