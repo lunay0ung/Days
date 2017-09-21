@@ -305,8 +305,8 @@ public class DiaryActivity extends AppCompatActivity implements View.OnClickList
         Intent cropIntent = new Intent("com.android.camera.action.CROP");
 
         cropIntent.setDataAndType(photoUri, "image/*");
-        cropIntent.putExtra("outputX", 350); //크롭한 이미지의 x축 크기
-        cropIntent.putExtra("outputY", 350);
+        cropIntent.putExtra("outputX", 750); //크롭한 이미지의 x축 크기
+        cropIntent.putExtra("outputY", 1500); //원래 가로세로 350으로 해두었었어므
         cropIntent.putExtra("aspectX", 1);  //가로 세로 비율
         cropIntent.putExtra("aspectY", 1);
         cropIntent.putExtra("scale", true); //꽉찬 비율로 저장
