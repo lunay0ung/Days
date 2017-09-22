@@ -177,6 +177,14 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.memoDoneBtn:
+                //파일이 재생되고 있을 때 뒤로 가면 재생이 중지됨
+                if (mPlayerState == PLAYING)
+                {
+                    mPlayerState = PLAY_STOP;
+                    stopPlay();
+                    updateUI();
+                }
+
                 Intent getDataIntent = getIntent();
                 String special_audioUri = getDataIntent.getExtras().getString("special_audioUri");
                 this.RECORDED_FILE = special_audioUri;
@@ -247,7 +255,7 @@ public class ModifyAudioMemoActivity extends AppCompatActivity implements View.O
                                     file.delete();
                                     Log.e("파일있음?", ""+file.exists()); //exist에 대해 false, 즉 삭제 됨.
 
-                                    ed_memo_title.setText("오디오 파일 삭제");
+                                    ed_memo_title.setText("오디오 파일이 삭제됨");
                                     mTvPlayMaxPoint.setText("00:00");
 
                                     RECORDED_FILE= null; //여기서 null을 넣어도 소용없음, 어차피 저장하는 case는 delete위에 있잖아

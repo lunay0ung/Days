@@ -183,6 +183,14 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     updateUI();
                 }
 
+                //파일이 재생되고 있을 때 뒤로 가면 재생이 중지됨
+                if (mPlayerState == PLAYING)
+                {
+                    mPlayerState = PLAY_STOP;
+                    stopPlay();
+                    updateUI();
+                }
+
 
                 Intent recordIntent = new Intent(getApplicationContext(), MainActivity.class);
 

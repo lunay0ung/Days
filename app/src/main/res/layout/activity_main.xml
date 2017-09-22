@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_alignParentTop="true"
-                        android:layout_weight="9"
+                        android:layout_weight="11.43"
                         android:choiceMode="multipleChoice"
                         android:listSelector="#ADD8E6" />
 
@@ -72,78 +72,115 @@
                         android:layout_weight="2"></android.support.v4.view.ViewPager>
 
                 </LinearLayout>
+    <LinearLayout
+        android:id="@+id/content2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:weightSum="10">
 
-                <LinearLayout
-                    android:id="@+id/content2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    android:weightSum="10">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="455dp"
+            android:layout_weight="4.03"
+            android:scrollbars="vertical" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="455dp"
-                        android:scrollbars="vertical"
-                        android:layout_weight="7.78" />
+        <!-- android:layout_weight="6.77"-->
 
-                <!-- android:layout_weight="6.77"-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_weight="2"
+            android:orientation="horizontal"
+            android:weightSum="10">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="33dp"
-                        android:layout_weight="2"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
+            <Button
+                android:id="@+id/memoBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginStart="200dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/writing_128px"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp"
+                android:textSize="16sp" />
 
-                        <Button
-                            android:id="@+id/memoBtn"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginStart="200dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/writing_128px"
-                            android:gravity="center_vertical"
-                            android:paddingLeft="5dp"
-                            android:textSize="16sp" />
-
-                        <Button
-                            android:id="@+id/recordBtn"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/recording_128px"
-                            android:scaleType="fitXY"/>
-
-
-                        <Button
-                            android:id="@+id/sttBtn"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginBottom="5dp"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_marginTop="5dp"
-                            android:background="@drawable/bluemicrophone128px"
-                            android:scaleType="fitXY" />
-
-                    </LinearLayout>
+            <Button
+                android:id="@+id/recordBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/recording_128px"
+                android:scaleType="fitXY" />
 
 
-                </LinearLayout>
+            <Button
+                android:id="@+id/sttBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bluemicrophone128px"
+                android:scaleType="fitXY" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="5.82"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="3dp"
+                android:text="음성인식" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/textView3"
+                android:layout_alignTop="@+id/textView3"
+                android:layout_marginEnd="18dp"
+                android:layout_toStartOf="@+id/textView3"
+                android:text="텍스트" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/textView"
+                android:layout_alignBottom="@+id/textView"
+                android:layout_marginEnd="12dp"
+                android:layout_toStartOf="@+id/textView"
+                android:text="녹음" />
+        </RelativeLayout>
 
 
-            </FrameLayout>
+    </LinearLayout>
+
+
+</FrameLayout>
         </LinearLayout>
     </TabHost>
 </LinearLayout>
